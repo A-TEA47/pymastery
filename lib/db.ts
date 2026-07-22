@@ -1,10 +1,19 @@
-// lib/db.ts
-// IndexedDB persistence via Dexie.js
-
-import Dexie, { Table } from "dexie";
+import { db, auth } from "./firebase";
+import { 
+  collection, 
+  doc, 
+  getDoc, 
+  getDocs, 
+  setDoc, 
+  addDoc, 
+  query, 
+  where, 
+  orderBy, 
+  updateDoc 
+} from "firebase/firestore";
 
 export interface ConceptProgress {
-  id?: number;
+  id?: string;
   conceptId: string;
   completed: boolean;
   warmupPassed: boolean;
@@ -18,7 +27,7 @@ export interface ConceptProgress {
 }
 
 export interface ProblemAttempt {
-  id?: number;
+  id?: string;
   problemId: string;
   conceptId: string;
   passed: boolean;
@@ -30,55 +39,45 @@ export interface ProblemAttempt {
 }
 
 export interface DailyStreak {
-  id?: number;
+  id?: string;
   date: string; // "YYYY-MM-DD"
   problemsSolved: number;
   conceptsCompleted: number;
 }
 
-export interface UserSettings {
-  id?: number;
-  key: string;
-  value: string;
-}
-
-class PyMasteryDB extends Dexie {
-  conceptProgress!: Table<ConceptProgress>;
-  problemAttempts!: Table<ProblemAttempt>;
-  dailyStreaks!: Table<DailyStreak>;
-  userSettings!: Table<UserSettings>;
-
-  constructor() {
-    super("PyMasteryDB");
-    this.version(1).stores({
-      conceptProgress: "++id, conceptId, completed, masteryScore",
-      problemAttempts: "++id, problemId, conceptId, passed, attemptedAt",
-      dailyStreaks: "++id, date",
-      userSettings: "++id, key",
-    });
-  }
-}
-
-export const db = new PyMasteryDB();
-
 // ─── Progress helpers ──────────────────────────────────────────────────────────
 
+function getUserId() {
+  return auth.currentUser?.uid;
+}
+
 export async function getConceptProgress(conceptId: string): Promise<ConceptProgress | null> {
-  const row = await db.conceptProgress.where("conceptId").equals(conceptId).first();
-  return row || null;
+  const uid = getUserId();
+  if (!uid) return null;
+
+  const docRef = doc(db, `users/${uid}/conceptProgress/${conceptId}`);
+  const snap = await getDoc(docRef);
+  if (snap.exists()) {
+    return snap.data() as ConceptProgress;
+  }
+  return null;
 }
 
 export async function updateConceptProgress(
   conceptId: string,
   updates: Partial<ConceptProgress>
 ): Promise<void> {
-  const existing = await getConceptProgress(conceptId);
+  const uid = getUserId();
+  if (!uid) return;
+
+  const docRef = doc(db, `users/${uid}/conceptProgress/${conceptId}`);
+  const existing = await getDoc(docRef);
   const now = Date.now();
 
-  if (existing?.id) {
-    await db.conceptProgress.update(existing.id, { ...updates, lastAttemptAt: now });
+  if (existing.exists()) {
+    await updateDoc(docRef, { ...updates, lastAttemptAt: now });
   } else {
-    await db.conceptProgress.add({
+    await setDoc(docRef, {
       conceptId,
       completed: false,
       warmupPassed: false,
@@ -102,7 +101,12 @@ export async function markConceptComplete(conceptId: string): Promise<void> {
 }
 
 export async function getAllProgress(): Promise<ConceptProgress[]> {
-  return db.conceptProgress.toArray();
+  const uid = getUserId();
+  if (!uid) return [];
+
+  const colRef = collection(db, `users/${uid}/conceptProgress`);
+  const snap = await getDocs(colRef);
+  return snap.docs.map(d => d.data() as ConceptProgress);
 }
 
 export async function getTotalStats(): Promise<{
@@ -114,8 +118,16 @@ export async function getTotalStats(): Promise<{
   const allProgress = await getAllProgress();
   const conceptsCompleted = allProgress.filter((p) => p.completed).length;
 
-  const allAttempts = await db.problemAttempts.toArray();
-  const problemsSolved = allAttempts.filter((a) => a.passed).length;
+  const uid = getUserId();
+  let problemsSolved = 0;
+  if (uid) {
+    const attemptsRef = collection(db, `users/${uid}/problemAttempts`);
+    const q = query(attemptsRef, where("passed", "==", true));
+    const snap = await getDocs(q);
+    // Count unique problems solved
+    const uniqueProblems = new Set(snap.docs.map(d => d.data().problemId));
+    problemsSolved = uniqueProblems.size;
+  }
 
   const streak = await getCurrentStreak();
   const totalXP = conceptsCompleted * 100 + problemsSolved * 20;
@@ -126,14 +138,25 @@ export async function getTotalStats(): Promise<{
 // ─── Problem attempt helpers ──────────────────────────────────────────────────
 
 export async function recordProblemAttempt(attempt: Omit<ProblemAttempt, "id">): Promise<void> {
-  await db.problemAttempts.add(attempt);
+  const uid = getUserId();
+  if (!uid) return;
+
+  const colRef = collection(db, `users/${uid}/problemAttempts`);
+  await addDoc(colRef, attempt);
+
   if (attempt.passed) {
     await recordDailyActivity(1, 0);
   }
 }
 
 export async function getProblemAttempts(problemId: string): Promise<ProblemAttempt[]> {
-  return db.problemAttempts.where("problemId").equals(problemId).toArray();
+  const uid = getUserId();
+  if (!uid) return [];
+
+  const colRef = collection(db, `users/${uid}/problemAttempts`);
+  const q = query(colRef, where("problemId", "==", problemId));
+  const snap = await getDocs(q);
+  return snap.docs.map(d => d.data() as ProblemAttempt).sort((a, b) => b.attemptedAt - a.attemptedAt);
 }
 
 // ─── Streak helpers ────────────────────────────────────────────────────────────
@@ -143,21 +166,33 @@ function todayStr(): string {
 }
 
 export async function recordDailyActivity(problemsSolved: number, conceptsCompleted: number): Promise<void> {
-  const today = todayStr();
-  const existing = await db.dailyStreaks.where("date").equals(today).first();
+  const uid = getUserId();
+  if (!uid) return;
 
-  if (existing?.id) {
-    await db.dailyStreaks.update(existing.id, {
-      problemsSolved: (existing.problemsSolved || 0) + problemsSolved,
-      conceptsCompleted: (existing.conceptsCompleted || 0) + conceptsCompleted,
+  const today = todayStr();
+  const docRef = doc(db, `users/${uid}/dailyStreaks/${today}`);
+  const snap = await getDoc(docRef);
+
+  if (snap.exists()) {
+    const data = snap.data() as DailyStreak;
+    await updateDoc(docRef, {
+      problemsSolved: (data.problemsSolved || 0) + problemsSolved,
+      conceptsCompleted: (data.conceptsCompleted || 0) + conceptsCompleted,
     });
   } else {
-    await db.dailyStreaks.add({ date: today, problemsSolved, conceptsCompleted });
+    await setDoc(docRef, { date: today, problemsSolved, conceptsCompleted });
   }
 }
 
 export async function getCurrentStreak(): Promise<number> {
-  const all = await db.dailyStreaks.orderBy("date").reverse().toArray();
+  const uid = getUserId();
+  if (!uid) return 0;
+
+  const colRef = collection(db, `users/${uid}/dailyStreaks`);
+  const q = query(colRef, orderBy("date", "desc"));
+  const snap = await getDocs(q);
+  
+  const all = snap.docs.map(d => d.data() as DailyStreak);
   if (all.length === 0) return 0;
 
   let streak = 0;
@@ -179,7 +214,21 @@ export async function getCurrentStreak(): Promise<number> {
 }
 
 export async function getStreakCalendar(days: number = 90): Promise<{ date: string; count: number }[]> {
-  const all = await db.dailyStreaks.toArray();
+  const uid = getUserId();
+  if (!uid) {
+    // Return empty calendar
+    const result = [];
+    for (let i = days - 1; i >= 0; i--) {
+      const d = new Date();
+      d.setDate(d.getDate() - i);
+      result.push({ date: d.toISOString().slice(0, 10), count: 0 });
+    }
+    return result;
+  }
+
+  const colRef = collection(db, `users/${uid}/dailyStreaks`);
+  const snap = await getDocs(colRef);
+  const all = snap.docs.map(d => d.data() as DailyStreak);
   const map = new Map(all.map((s) => [s.date, s.problemsSolved + s.conceptsCompleted]));
 
   const result = [];
@@ -195,15 +244,18 @@ export async function getStreakCalendar(days: number = 90): Promise<{ date: stri
 // ─── Settings ─────────────────────────────────────────────────────────────────
 
 export async function getSetting(key: string, defaultValue: string = ""): Promise<string> {
-  const row = await db.userSettings.where("key").equals(key).first();
-  return row ? row.value : defaultValue;
+  const uid = getUserId();
+  if (!uid) return defaultValue;
+
+  const docRef = doc(db, `users/${uid}/settings/${key}`);
+  const snap = await getDoc(docRef);
+  return snap.exists() ? snap.data().value : defaultValue;
 }
 
 export async function setSetting(key: string, value: string): Promise<void> {
-  const existing = await db.userSettings.where("key").equals(key).first();
-  if (existing?.id) {
-    await db.userSettings.update(existing.id, { value });
-  } else {
-    await db.userSettings.add({ key, value });
-  }
+  const uid = getUserId();
+  if (!uid) return;
+
+  const docRef = doc(db, `users/${uid}/settings/${key}`);
+  await setDoc(docRef, { key, value });
 }

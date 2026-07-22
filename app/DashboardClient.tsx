@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { getTotalStats, getStreakCalendar, getAllProgress } from "@/lib/db";
+import { useAuth } from "@/components/Layout/AuthProvider";
 import type { CurriculumLevel } from "@/lib/content";
 
 interface DashboardClientProps {
@@ -13,6 +14,7 @@ export default function DashboardClient({ curriculum }: DashboardClientProps) {
   const [stats, setStats] = useState({ conceptsCompleted: 0, problemsSolved: 0, currentStreak: 0, totalXP: 0 });
   const [calendar, setCalendar] = useState<{ date: string; count: number }[]>([]);
   const [lastConcept, setLastConcept] = useState<{ level: string; module: string; id: string; title: string } | null>(null);
+  const { user, loading } = useAuth();
 
   useEffect(() => {
     getTotalStats().then(setStats);
@@ -33,7 +35,7 @@ export default function DashboardClient({ curriculum }: DashboardClientProps) {
         }
       }
     });
-  }, [curriculum]);
+  }, [curriculum, user]);
 
   const totalConcepts = curriculum.reduce((sum, l) => sum + l.modules.reduce((s, m) => s + m.concepts.length, 0), 0);
   const progressPct = totalConcepts > 0 ? Math.round((stats.conceptsCompleted / totalConcepts) * 100) : 0;
@@ -43,6 +45,16 @@ export default function DashboardClient({ curriculum }: DashboardClientProps) {
 
   return (
     <div style={{ maxWidth: "1100px", margin: "0 auto", padding: "40px 24px" }}>
+      {/* Guest Warning */}
+      {!loading && !user && (
+        <div style={{ background: "rgba(249,115,22,0.1)", border: "1px solid rgba(249,115,22,0.3)", padding: "16px", borderRadius: "8px", marginBottom: "24px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <div>
+            <h3 style={{ margin: "0 0 4px", fontSize: "1rem", color: "var(--accent-orange)" }}>Not signed in!</h3>
+            <p style={{ margin: 0, fontSize: "0.85rem", color: "var(--text-secondary)" }}>Sign in with Google in the top right to save your progress across devices.</p>
+          </div>
+        </div>
+      )}
+
       {/* Hero */}
       <div className="animate-fade-in" style={{ marginBottom: "48px" }}>
         <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: "24px", flexWrap: "wrap" }}>

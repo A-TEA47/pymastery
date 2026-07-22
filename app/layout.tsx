@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import Navbar from "@/components/Layout/Navbar";
+import { AuthProvider } from "@/components/Layout/AuthProvider";
 
 export const metadata: Metadata = {
   title: "PyMastery — Learn Python from Beginner to Expert",
@@ -26,10 +27,12 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
       </head>
       <body>
-        <Navbar />
-        <main style={{ position: "relative", zIndex: 1, minHeight: "calc(100vh - 64px)" }}>
-          {children}
-        </main>
+        <AuthProvider>
+          <Navbar />
+          <main style={{ position: "relative", zIndex: 1, minHeight: "calc(100vh - 64px)" }}>
+            {children}
+          </main>
+        </AuthProvider>
       </body>
     </html>
   );

@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { getAllProgress } from "@/lib/db";
+import { useAuth } from "@/components/Layout/AuthProvider";
 import type { CurriculumLevel } from "@/lib/content";
 
 interface CurriculumClientProps {
@@ -12,12 +13,14 @@ interface CurriculumClientProps {
 export default function CurriculumClient({ curriculum }: CurriculumClientProps) {
   const [completedIds, setCompletedIds] = useState<Set<string>>(new Set());
   const [expandedLevels, setExpandedLevels] = useState<Set<string>>(new Set(["beginner"]));
+  const { user, loading } = useAuth();
 
   useEffect(() => {
+    if (loading) return;
     getAllProgress().then((progress) => {
       setCompletedIds(new Set(progress.filter((p) => p.completed).map((p) => p.conceptId)));
     });
-  }, []);
+  }, [user, loading]);
 
   const levelColors: Record<string, { bg: string; border: string; text: string; badge: string }> = {
     beginner: { bg: "rgba(16,217,138,0.06)", border: "rgba(16,217,138,0.25)", text: "var(--accent-green)", badge: "badge-beginner" },

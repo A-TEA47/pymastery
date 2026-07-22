@@ -3,6 +3,9 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import { signInWithPopup, signOut } from "firebase/auth";
+import { auth, googleProvider } from "@/lib/firebase";
+import { useAuth } from "./AuthProvider";
 
 const navItems = [
   { href: "/", label: "Dashboard", icon: "🏠" },
@@ -16,6 +19,19 @@ const navItems = [
 export default function Navbar() {
   const pathname = usePathname();
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { user, loading } = useAuth();
+
+  const handleSignIn = async () => {
+    try {
+      await signInWithPopup(auth, googleProvider);
+    } catch (error) {
+      console.error("Error signing in", error);
+    }
+  };
+
+  const handleSignOut = async () => {
+    await signOut(auth);
+  };
 
   return (
     <nav
@@ -98,6 +114,46 @@ export default function Navbar() {
               {item.label}
             </Link>
           ))}
+        </div>
+
+        {/* Auth Section */}
+        <div className="hide-mobile" style={{ display: "flex", alignItems: "center", gap: "12px", marginLeft: "auto" }}>
+          {!loading && (
+            user ? (
+              <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+                <img
+                  src={user.photoURL || ""}
+                  alt="Profile"
+                  style={{ width: "32px", height: "32px", borderRadius: "50%", border: "2px solid var(--accent-blue)" }}
+                />
+                <button
+                  onClick={handleSignOut}
+                  style={{
+                    background: "transparent",
+                    border: "1px solid var(--border)",
+                    color: "var(--text-secondary)",
+                    padding: "6px 12px",
+                    borderRadius: "8px",
+                    fontSize: "0.85rem",
+                    cursor: "pointer",
+                    transition: "all 0.2s"
+                  }}
+                  onMouseOver={(e) => { e.currentTarget.style.borderColor = "var(--text-primary)"; e.currentTarget.style.color = "var(--text-primary)"; }}
+                  onMouseOut={(e) => { e.currentTarget.style.borderColor = "var(--border)"; e.currentTarget.style.color = "var(--text-secondary)"; }}
+                >
+                  Sign Out
+                </button>
+              </div>
+            ) : (
+              <button
+                onClick={handleSignIn}
+                className="btn-primary"
+                style={{ padding: "8px 16px", fontSize: "0.9rem" }}
+              >
+                Sign in with Google
+              </button>
+            )
+          )}
         </div>
 
         {/* Mobile menu button */}
