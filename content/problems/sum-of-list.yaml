@@ -1,0 +1,53 @@
+id: sum-of-list
+concept_ids:
+  - lists
+level: beginner
+tier: warmup
+difficulty: 1
+title: Sum a List Without Built-ins
+prompt: |
+  Write a function sum_list(nums) that returns the total sum of all
+  numbers in the list nums.
+
+  You may NOT use Python's built-in sum() function — implement the
+  summation yourself using a loop.
+
+  Example:
+    sum_list([1, 2, 3])        => 6
+    sum_list([10, -5, 3])      => 8
+    sum_list([])               => 0
+    sum_list([7])              => 7
+starter_code: |
+  def sum_list(nums):
+      # your code here — do NOT use sum()
+      pass
+solution_code: |
+  def sum_list(nums):
+      total = 0
+      for n in nums:
+          total += n
+      return total
+function_name: sum_list
+test_cases:
+  - input: [[1, 2, 3]]
+    expected: 6
+  - input: [[10, -5, 3]]
+    expected: 8
+  - input: [[]]
+    expected: 0
+  - input: [[7]]
+    expected: 7
+hidden_test_cases:
+  - input: [[100, 200, 300]]
+    expected: 600
+  - input: [[-1, -2, -3]]
+    expected: -6
+hints:
+  - "Start with a total variable set to 0, then add each number from the list to it in a loop."
+  - "Use 'for n in nums:' to iterate over every element."
+  - "An empty list should return 0 — check that your initial value handles that correctly."
+tags:
+  - lists
+  - loops
+  - accumulator
+  - beginner

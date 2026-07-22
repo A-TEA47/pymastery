@@ -1,0 +1,209 @@
+id: scope
+level: beginner
+module: functions
+title: "Scope: LEGB Rule and Closures"
+prerequisites:
+  - functions
+estimated_minutes: 30
+
+plain_explanation: |
+  Scope answers the question: "Where can a variable be seen and used?" Think of a
+  company: a private desk drawer is only accessible to the person sitting there (local
+  scope). A filing cabinet in the office is accessible to everyone in the room (global
+  scope). Variables in Python work the same way — where you create them determines where
+  you can use them.
+
+  When Python looks up a variable name, it searches through four scopes in order, called
+  LEGB: Local first (inside the current function), then Enclosing (outer functions if any),
+  then Global (the module level), then Built-in (Python's own names like print and len).
+  It uses the first one it finds. This order prevents name clashes between layers.
+
+  The `global` keyword lets a function reach out and modify a module-level variable
+  directly. This is sometimes necessary but generally considered bad practice — it makes
+  code harder to understand and test. Prefer returning values from functions instead.
+
+  A closure is when an inner function "remembers" a variable from its enclosing function,
+  even after the outer function has finished running. It's like a chef memorising a secret
+  ingredient from a recipe that no longer exists. Closures are the foundation of many
+  powerful Python patterns and are worth understanding even at the beginner level.
+
+technical_explanation: |
+  **LEGB Lookup Order:**
+  1. **L**ocal — variables assigned inside the current function
+  2. **E**nclosing — variables in any enclosing function scopes (for nested functions)
+  3. **G**lobal — names assigned at the module level (top-level of the file)
+  4. **B**uilt-in — Python's built-in namespace (`len`, `print`, `range`, etc.)
+
+  Python resolves names at **runtime** but determines scope at **compile time** by
+  scanning for assignment statements. If a name is assigned anywhere in a function,
+  Python treats it as local throughout that function — even before the assignment.
+  This causes `UnboundLocalError` if the name is read before assignment.
+
+  **global statement:** declares that a name refers to the global scope.
+  ```python
+  count = 0
+  def increment():
+      global count
+      count += 1
+  ```
+
+  **nonlocal statement:** declares a name refers to an enclosing (not global) scope.
+  ```python
+  def outer():
+      x = 10
+      def inner():
+          nonlocal x
+          x += 1
+      inner()
+      return x   # 11
+  ```
+
+  **Closure:** a nested function that captures (closes over) free variables from its
+  enclosing scope. The captured variables live in a cell object attached to the inner
+  function, not on the call stack. Closures are created when the inner function is
+  returned or stored.
+
+  **`__closure__`** attribute holds the captured cell objects.
+
+  Common use case: **factory functions** that return customised callables.
+
+examples:
+  - title: "Local vs Global Scope"
+    code: |
+      # Module-level (global) variable
+      greeting = "Hello"
+
+      def say_hi(name):
+          # Local variable — exists only inside this function
+          message = f"{greeting}, {name}!"   # reads global 'greeting'
+          return message
+
+      print(say_hi("Alice"))   # Hello, Alice!
+      # print(message)         # NameError — 'message' is local to say_hi
+
+      # --- The global keyword ---
+      counter = 0
+
+      def increment():
+          global counter          # tell Python we mean the module-level counter
+          counter += 1
+
+      increment()
+      increment()
+      print(counter)   # 2
+
+      # Better pattern: avoid global, return instead
+      def increment_by(current, amount=1):
+          return current + amount
+
+      counter = 0
+      counter = increment_by(counter)
+      counter = increment_by(counter, 5)
+      print(counter)   # 6
+    explanation: >
+      Functions can READ global variables without the global keyword but need it to
+      WRITE to them. The better approach is to pass the value in and return the new value.
+
+  - title: "The LEGB Rule in Action"
+    code: |
+      x = "global"         # G — global scope
+
+      def outer():
+          x = "enclosing"  # E — enclosing scope
+
+          def inner():
+              x = "local"  # L — local scope
+              print(x)     # local
+
+          inner()
+          print(x)         # enclosing (inner's x didn't affect this)
+
+      outer()
+      print(x)             # global  (outer's x didn't affect this)
+
+      # Built-in names (B)
+      # 'len', 'print', 'range' are in the built-in namespace
+      # You can shadow them (bad practice!):
+      def bad_example():
+          len = lambda x: "I broke len!"   # local len shadows built-in
+          print(len([1, 2, 3]))            # "I broke len!"
+
+      # Don't do this! After bad_example() returns, the built-in 'len' is fine.
+    explanation: >
+      Python searches L → E → G → B and uses the first match. Each scope is independent —
+      an inner function's local variable doesn't affect the enclosing scope unless you
+      use the nonlocal keyword.
+
+  - title: "Closures — Factories and Remembered State"
+    code: |
+      # A closure factory: make_multiplier returns a function
+      def make_multiplier(factor):
+          """Return a function that multiplies its input by factor."""
+          def multiplier(x):
+              return x * factor    # factor is captured from enclosing scope
+          return multiplier        # return the inner function, not its result
+
+      double = make_multiplier(2)
+      triple = make_multiplier(3)
+
+      print(double(5))   # 10
+      print(triple(5))   # 15
+      print(double(7))   # 14
+
+      # Each closure remembers its own 'factor'
+      print(double.__closure__[0].cell_contents)  # 2
+      print(triple.__closure__[0].cell_contents)  # 3
+
+      # Adder factory
+      def make_adder(n):
+          return lambda x: x + n
+
+      add10 = make_adder(10)
+      print(add10(5))    # 15
+      print(add10(22))   # 32
+    explanation: >
+      Each call to make_multiplier creates a new closure with its own captured 'factor'.
+      The inner function 'remembers' the value even after make_multiplier has returned.
+      This pattern is the basis of decorators and many functional programming techniques.
+
+common_mistakes:
+  - "Reading a global variable inside a function and then assigning it without 'global' — causes UnboundLocalError"
+  - "Overusing 'global' — it creates hidden dependencies; prefer passing values as parameters"
+  - "Assuming a loop variable in a closure captures the current value — it captures the variable reference, not the value at that moment"
+  - "Confusing 'global' (module-level) with 'nonlocal' (enclosing function level)"
+  - "Shadowing built-in names like 'list', 'len', 'input' — this causes hard-to-spot bugs"
+
+related_concepts:
+  - functions
+  - error-basics
+
+problem_ids:
+  - counter-closure
+  - scope-quiz
+  - make-adder
+
+glossary_terms:
+  - term: Scope
+    definition: >
+      The region of a program where a name (variable, function) is visible and accessible.
+      Python has local, enclosing, global, and built-in scopes.
+  - term: LEGB Rule
+    definition: >
+      Python's name resolution order: Local → Enclosing → Global → Built-in. Python
+      searches each scope in this order until the name is found.
+  - term: Global Scope
+    definition: >
+      The module-level namespace. Variables and functions defined at the top level of a
+      file are in global scope and accessible throughout the module.
+  - term: Closure
+    definition: >
+      An inner function that captures and remembers variables from its enclosing scope,
+      even after the outer function has finished executing.
+  - term: nonlocal
+    definition: >
+      A keyword that declares a variable in an inner function refers to the nearest
+      enclosing function's scope (not global). Needed to reassign enclosing variables.
+  - term: UnboundLocalError
+    definition: >
+      Raised when Python determines a name is local (because it's assigned somewhere in
+      the function) but the code tries to read it before the assignment executes.

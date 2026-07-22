@@ -1,0 +1,57 @@
+id: "big-o-notation"
+level: "advanced"
+module: "algorithmic-complexity"
+title: "Big-O Notation & Complexity"
+prerequisites: ["loops", "functions"]
+estimated_minutes: 40
+plain_explanation: |
+  Big-O notation is a way to describe how the runtime or memory usage of an algorithm grows as the input size grows. It's the language of performance.
+  
+  Instead of saying "this function takes 2 milliseconds," we say "this function is O(n)." This means if you double the number of items (n), the time it takes roughly doubles. If it's O(n²), doubling the items quadruples the time!
+  
+  Big-O focuses on the worst-case scenario and ignores constant multipliers. It helps programmers decide if a piece of code will survive when the dataset gets huge.
+technical_explanation: |
+  Big-O notation (e.g., O(1), O(log n), O(n), O(n log n), O(n^2)) describes the asymptotic upper bound of the growth rate of a function.
+  
+  - O(1) Constant: The operation takes the same amount of time regardless of input size (e.g., dictionary lookup).
+  - O(n) Linear: The time grows proportionally with the input size (e.g., a simple for loop over a list).
+  - O(n^2) Quadratic: The time grows with the square of the input size (e.g., a nested for loop over a list).
+  
+  Space complexity works the same way but measures peak memory allocation instead of execution time.
+examples:
+  - title: "O(1) - Constant Time"
+    code: |
+      def get_first(items):
+          # No matter how big the list is, getting the 0th item takes 1 step
+          return items[0]
+          
+      print(get_first([1, 2, 3, 4, 5]))
+    explanation: "Looking up an index in a list or a key in a dictionary is typically O(1)."
+  - title: "O(n) - Linear Time"
+    code: |
+      def print_all(items):
+          # We must do one step for each item in the list
+          for item in items:
+              print(item)
+    explanation: "If items has 10 elements, the loop runs 10 times. If 1,000, it runs 1,000 times."
+  - title: "O(n^2) - Quadratic Time"
+    code: |
+      def print_pairs(items):
+          # For every item, we loop through every item AGAIN
+          for i in items:
+              for j in items:
+                  print(i, j)
+    explanation: "If items has 10 elements, it prints 100 times. If 1,000, it prints 1,000,000 times. Dangerous for large n!"
+common_mistakes:
+  - "Worrying about constants: O(2n) is just written as O(n)."
+  - "Confusing worst-case and best-case: searching a list is O(n) even if you might find the item on the first try (which is O(1) best-case)."
+  - "Assuming built-in functions are always O(1). e.g., 'item in list' is O(n), but 'item in set' is O(1)."
+related_concepts: ["data-structures-intro"]
+problem_ids: []
+glossary_terms:
+  - term: "Big-O Notation"
+    definition: "A mathematical notation used to describe the limiting behavior of a function when the argument tends towards a particular value or infinity; used in computer science to classify algorithms."
+  - term: "Time Complexity"
+    definition: "The amount of time an algorithm takes to run, expressed as a function of the length of the input."
+  - term: "Space Complexity"
+    definition: "The amount of memory space an algorithm takes to run, expressed as a function of the length of the input."

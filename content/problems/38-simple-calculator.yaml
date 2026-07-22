@@ -1,0 +1,72 @@
+id: simple-calculator
+concept_ids:
+  - input-output
+level: beginner
+tier: applied
+difficulty: 5
+title: Simple Calculator
+prompt: |
+  Write a function calculate(a, op, b) where a and b are numbers and op is a
+  string representing an arithmetic operator. Return the result as a float.
+
+  Supported operators: '+', '-', '*', '/'
+
+  Rules:
+    - Return the result of a op b as a float.
+    - Raise ValueError if op is not one of the four supported operators.
+    - Raise ZeroDivisionError if op is '/' and b is 0.
+
+  Examples:
+    calculate(10, '+', 5)   -> 15.0
+    calculate(10, '-', 3)   -> 7.0
+    calculate(4, '*', 2.5)  -> 10.0
+    calculate(9, '/', 3)    -> 3.0
+    calculate(1, '%', 2)    -> raises ValueError
+    calculate(5, '/', 0)    -> raises ZeroDivisionError
+
+  Function signature:
+    def calculate(a, op, b):
+starter_code: |
+  def calculate(a, op, b):
+      # your code here
+      pass
+solution_code: |
+  def calculate(a, op, b):
+      if op == '+':
+          return float(a + b)
+      elif op == '-':
+          return float(a - b)
+      elif op == '*':
+          return float(a * b)
+      elif op == '/':
+          if b == 0:
+              raise ZeroDivisionError("Cannot divide by zero")
+          return float(a / b)
+      else:
+          raise ValueError(f"Unsupported operator: '{op}'")
+function_name: calculate
+test_cases:
+  - input: [10, "+", 5]
+    expected: 15.0
+  - input: [10, "-", 3]
+    expected: 7.0
+  - input: [4, "*", 2.5]
+    expected: 10.0
+  - input: [9, "/", 3]
+    expected: 3.0
+hidden_test_cases:
+  - input: [0, "+", 0]
+    expected: 0.0
+  - input: [100, "/", 4]
+    expected: 25.0
+hints:
+  - "Use if/elif to check each operator and perform the corresponding operation."
+  - "Always convert the result to float before returning."
+  - "Check for division by zero before performing division."
+  - "Raise ValueError with a helpful message for unknown operators."
+tags:
+  - input-output
+  - conditionals
+  - exceptions
+  - arithmetic
+  - beginner

@@ -1,0 +1,210 @@
+id: loops
+level: beginner
+module: control-flow
+title: "Loops: for, while, and Iteration Helpers"
+prerequisites:
+  - conditionals
+  - lists
+estimated_minutes: 40
+
+plain_explanation: |
+  A loop lets you repeat an action without writing the same code dozens of times. Imagine
+  stamping a date on 100 envelopes — you wouldn't write "stamp envelope" 100 times.
+  You'd say "for each envelope in the pile, stamp it." Python's `for` loop does exactly
+  that: it goes through every item in a collection and does something with each one.
+
+  A `while` loop is different — it keeps running as long as a condition remains true,
+  like stirring a sauce "while it hasn't thickened yet." It's most useful when you don't
+  know in advance how many times you'll need to repeat something.
+
+  `range()` is the go-to tool for repeating something a fixed number of times. `range(5)`
+  gives you the numbers 0 through 4. `range(1, 11)` gives 1 through 10. You can also
+  count by steps: `range(0, 20, 2)` gives even numbers.
+
+  Two special keywords control loop flow: `break` immediately exits the loop, like finding
+  your keys and stopping the search. `continue` skips the rest of the current iteration
+  and jumps to the next one, like skipping a bad song in a playlist. `enumerate()` gives
+  you both the item and its index. `zip()` lets you loop over two lists in parallel.
+
+technical_explanation: |
+  **for loop** — iterates over any iterable (list, string, range, dict, etc.):
+  ```python
+  for variable in iterable:
+      # body
+  ```
+  Python's for loop is a "for-each" — it doesn't use an index counter by default.
+
+  **range(stop)**, **range(start, stop)**, **range(start, stop, step)**:
+  Returns a lazy range object; elements generated on demand (memory-efficient).
+
+  **while loop:**
+  ```python
+  while condition:
+      # body
+  # optional else clause runs if loop ended normally (no break)
+  ```
+
+  **break** — immediately exits the nearest enclosing loop.
+  **continue** — skips to the next iteration of the loop.
+  **for/while else** — executes the else block if loop completes without hitting `break`.
+
+  **enumerate(iterable, start=0)** — yields `(index, value)` tuples.
+
+  **zip(*iterables)** — yields tuples pairing elements from multiple iterables; stops at
+  the shortest. Use `itertools.zip_longest` for equal-length padding.
+
+  **Nested loops:** the inner loop completes fully for each iteration of the outer loop.
+
+  **List comprehension** (efficient one-liner):
+  ```python
+  squares = [x**2 for x in range(10)]
+  filtered = [x for x in data if x > 0]
+  ```
+
+  **Time complexity:** loops are O(n); nested loops are O(n²) — be mindful for large data.
+
+examples:
+  - title: "for Loop and range()"
+    code: |
+      # Basic for loop over a list
+      fruits = ["apple", "banana", "cherry"]
+      for fruit in fruits:
+          print(fruit)
+
+      # range() — fixed repetitions
+      for i in range(5):          # 0, 1, 2, 3, 4
+          print(i, end=" ")
+      print()
+
+      # range(start, stop, step)
+      for n in range(10, 0, -2):  # 10, 8, 6, 4, 2
+          print(n, end=" ")
+      print()
+
+      # enumerate — index + value together
+      for index, fruit in enumerate(fruits, start=1):
+          print(f"{index}. {fruit}")
+      # 1. apple
+      # 2. banana
+      # 3. cherry
+
+      # zip — parallel iteration
+      names = ["Alice", "Bob", "Carol"]
+      scores = [88, 92, 79]
+      for name, score in zip(names, scores):
+          print(f"{name}: {score}")
+    explanation: >
+      Use enumerate() whenever you need both an item and its position — it's cleaner than
+      manually tracking a counter. zip() pairs up two lists without needing an index.
+
+  - title: "while Loop, break, and continue"
+    code: |
+      # while loop — run until condition is false
+      count = 0
+      while count < 5:
+          print(count, end=" ")
+          count += 1
+      print()   # 0 1 2 3 4
+
+      # break — exit the loop early
+      for number in range(1, 20):
+          if number % 7 == 0:
+              print(f"First multiple of 7: {number}")
+              break              # stops at 7
+
+      # continue — skip current iteration
+      for n in range(10):
+          if n % 2 == 0:
+              continue           # skip even numbers
+          print(n, end=" ")     # prints: 1 3 5 7 9
+      print()
+
+      # while with a sentinel value
+      total = 0
+      numbers = [4, 8, 2, -1, 5]   # -1 is a sentinel
+      i = 0
+      while i < len(numbers) and numbers[i] != -1:
+          total += numbers[i]
+          i += 1
+      print(f"Total: {total}")  # Total: 14
+    explanation: >
+      break is great for "search and stop" patterns. continue lets you filter items
+      without nesting an if/else inside the loop body.
+
+  - title: "Nested Loops and Practical Patterns"
+    code: |
+      # Nested loops — multiplication table
+      for row in range(1, 4):
+          for col in range(1, 4):
+              print(f"{row * col:3}", end="")
+          print()
+      #   1  2  3
+      #   2  4  6
+      #   3  6  9
+
+      # Accumulator pattern
+      numbers = [3, 7, 1, 9, 4, 6]
+      total = 0
+      for n in numbers:
+          total += n
+      print(f"Sum: {total}")    # Sum: 30
+
+      # Building a result list with a loop
+      words = ["hello", "world", "python"]
+      upper_words = []
+      for word in words:
+          upper_words.append(word.upper())
+      print(upper_words)   # ['HELLO', 'WORLD', 'PYTHON']
+
+      # Equivalent list comprehension (preview)
+      upper_words = [word.upper() for word in words]
+      print(upper_words)
+    explanation: >
+      Nested loops work fine for small inputs, but their O(n²) cost adds up fast.
+      The accumulator pattern (start with 0 or [] and add each item) is foundational
+      for building sums, counts, or result lists.
+
+common_mistakes:
+  - "Creating an infinite while loop by forgetting to update the condition variable"
+  - "Using range(n) and expecting it to include n — range(5) gives 0-4, not 0-5"
+  - "Modifying a list while iterating over it — use a copy or list comprehension instead"
+  - "Misusing break vs continue — break exits the loop, continue skips to next iteration"
+  - "Forgetting that nested loops can be O(n²) or worse — consider built-in functions"
+  - "Using a for loop with a manual index counter instead of enumerate()"
+  - "Assuming zip() pads shorter iterables — it silently stops at the shortest one"
+
+related_concepts:
+  - conditionals
+  - lists
+  - functions
+
+problem_ids:
+  - multiplication-table
+  - fibonacci-sequence
+  - longest-streak
+
+glossary_terms:
+  - term: Iteration
+    definition: >
+      The process of accessing each element in a collection one at a time, typically
+      using a for loop. Any object with an __iter__ method is "iterable".
+  - term: range()
+    definition: >
+      A built-in function that generates a lazy sequence of integers. Syntax:
+      range(stop), range(start, stop), range(start, stop, step).
+  - term: enumerate()
+    definition: >
+      A built-in that wraps an iterable and yields (index, value) tuples, optionally
+      starting the index at a specified value (default 0).
+  - term: zip()
+    definition: >
+      A built-in that pairs elements from multiple iterables together, yielding tuples.
+      Stops when the shortest iterable is exhausted.
+  - term: Accumulator Pattern
+    definition: >
+      A pattern where a variable (the accumulator) starts at an initial value (0, [],
+      etc.) and is updated on each loop iteration to build up a result.
+  - term: List Comprehension
+    definition: >
+      A concise syntax for building a list: [expression for item in iterable if condition].
+      Often more readable and faster than an equivalent for loop with append.

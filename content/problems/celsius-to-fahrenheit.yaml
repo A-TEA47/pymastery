@@ -1,0 +1,51 @@
+id: celsius-to-fahrenheit
+concept_ids:
+  - type-conversion-operators
+level: beginner
+tier: warmup
+difficulty: 1
+title: Celsius to Fahrenheit
+prompt: |
+  Write a function c_to_f(celsius) that converts a temperature from
+  Celsius to Fahrenheit using the formula:
+
+    F = C * 9/5 + 32
+
+  Return the result as a float rounded to 2 decimal places.
+
+  Example:
+    c_to_f(0)    => 32.0
+    c_to_f(100)  => 212.0
+    c_to_f(37)   => 98.6
+starter_code: |
+  def c_to_f(celsius):
+      # your code here
+      pass
+solution_code: |
+  def c_to_f(celsius):
+      return round(celsius * 9 / 5 + 32, 2)
+function_name: c_to_f
+test_cases:
+  - input: [0]
+    expected: 32.0
+  - input: [100]
+    expected: 212.0
+  - input: [37]
+    expected: 98.6
+  - input: [-40]
+    expected: -40.0
+hidden_test_cases:
+  - input: [20]
+    expected: 68.0
+  - input: [25]
+    expected: 77.0
+hints:
+  - "The formula is F = C * 9/5 + 32. In Python: celsius * 9 / 5 + 32."
+  - "Use round(value, 2) to round to 2 decimal places before returning."
+  - "Test with 0°C — it should give exactly 32.0°F and -40°C should give -40.0°F (the point where both scales meet)."
+tags:
+  - arithmetic
+  - floats
+  - rounding
+  - conversion
+  - beginner

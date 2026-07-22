@@ -1,0 +1,58 @@
+id: parse-number
+concept_ids:
+  - error-basics
+level: beginner
+tier: challenge
+difficulty: 5
+title: Parse Numbers from Strings
+prompt: |
+  Write a function parse_numbers(strings) that takes a list of strings and
+  returns a list of floats for each string that can be successfully converted
+  to a number. Strings that cannot be converted are silently skipped.
+
+  Examples:
+    parse_numbers(['1', '2.5', 'abc', '3'])    -> [1.0, 2.5, 3.0]
+    parse_numbers(['hello', 'world'])           -> []
+    parse_numbers(['10', '-3', '0', 'nope'])   -> [10.0, -3.0, 0.0]
+    parse_numbers([])                           -> []
+
+  Function signature:
+    def parse_numbers(strings):
+starter_code: |
+  def parse_numbers(strings):
+      # your code here
+      pass
+solution_code: |
+  def parse_numbers(strings):
+      result = []
+      for s in strings:
+          try:
+              result.append(float(s))
+          except (ValueError, TypeError):
+              pass
+      return result
+function_name: parse_numbers
+test_cases:
+  - input: [["1", "2.5", "abc", "3"]]
+    expected: [1.0, 2.5, 3.0]
+  - input: [["hello", "world"]]
+    expected: []
+  - input: [["10", "-3", "0", "nope"]]
+    expected: [10.0, -3.0, 0.0]
+  - input: [[]]
+    expected: []
+hidden_test_cases:
+  - input: [["3.14", "pi", "2.71", "e"]]
+    expected: [3.14, 2.71]
+  - input: [["100", "3.5", "nope", "-7", "!!"]]
+    expected: [100.0, 3.5, -7.0]
+hints:
+  - "Use a try/except block inside a loop — attempt float(s) and catch ValueError."
+  - "If conversion succeeds, append to the result list. If it raises, just pass."
+  - "A list comprehension won't easily handle exceptions — a for loop with try/except is cleaner here."
+tags:
+  - error-basics
+  - exceptions
+  - type-conversion
+  - lists
+  - beginner

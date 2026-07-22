@@ -1,0 +1,190 @@
+id: sets
+level: beginner
+module: data-structures
+title: "Sets: Unique Collections & Set Operations"
+prerequisites:
+  - lists
+estimated_minutes: 25
+
+plain_explanation: |
+  A set is a collection where every item appears at most once, and the items have no
+  particular order. Think of a guest list at a party — you wouldn't list the same person
+  twice, and you don't care about the exact seating order. Sets are perfect when you need
+  to track unique things.
+
+  The real power of sets comes from set operations — the same ones you learned in maths
+  class. The union of two sets gives you everything in either set. The intersection gives
+  you only what they have in common. The difference gives you what's in one but not the
+  other. These operations make tasks like "find all friends we have in common" trivially
+  easy.
+
+  Because sets use hashing to store items (just like dictionary keys), checking whether
+  something is in a set is extremely fast — even for millions of items. Compare this to
+  a list, where Python has to scan through every element to find a match.
+
+  The trade-off: sets are unordered (you can't do sets[0]) and items must be hashable
+  (no lists inside sets). If you need unique items in a stable order, consider converting
+  to a sorted list afterwards.
+
+technical_explanation: |
+  A Python set is a **mutable, unordered collection of unique hashable objects**
+  implemented as a hash table. Average O(1) for add, remove, and membership test.
+
+  **Creation:**
+  ```python
+  empty   = set()          # NOT {} — that creates an empty dict!
+  nums    = {1, 2, 3}
+  letters = set("hello")   # {'h', 'e', 'l', 'o'}  (duplicates removed)
+  from_list = set([1, 2, 2, 3])  # {1, 2, 3}
+  ```
+
+  **Mutation methods:**
+  | Method | Description |
+  |---|---|
+  | `.add(x)` | Add element x |
+  | `.remove(x)` | Remove x; raises KeyError if absent |
+  | `.discard(x)` | Remove x; no error if absent |
+  | `.pop()` | Remove and return an arbitrary element |
+  | `.clear()` | Remove all elements |
+  | `.update(iterable)` | Add all elements from iterable |
+
+  **Set operations (both operators and methods):**
+  | Operation | Operator | Method |
+  |---|---|---|
+  | Union | `A \| B` | `A.union(B)` |
+  | Intersection | `A & B` | `A.intersection(B)` |
+  | Difference | `A - B` | `A.difference(B)` |
+  | Symmetric difference | `A ^ B` | `A.symmetric_difference(B)` |
+  | Subset | `A <= B` | `A.issubset(B)` |
+  | Superset | `A >= B` | `A.issuperset(B)` |
+  | Disjoint | — | `A.isdisjoint(B)` |
+
+  In-place variants: `|=`, `&=`, `-=`, `^=`.
+
+  **frozenset:** immutable version; can be used as a dict key or set element.
+
+  **Membership:** `x in s` is O(1) vs O(n) for lists.
+
+examples:
+  - title: "Creating Sets and Basic Operations"
+    code: |
+      # Creating sets
+      fruits = {"apple", "banana", "cherry"}
+      print(fruits)                     # order is not guaranteed
+
+      # From a list (removes duplicates)
+      tags = set(["python", "code", "python", "fun", "code"])
+      print(tags)                       # {'python', 'code', 'fun'}
+
+      # Add and remove
+      fruits.add("mango")
+      fruits.remove("banana")           # raises KeyError if not found
+      fruits.discard("grape")           # safe — no error if absent
+      print(fruits)
+
+      # Membership check (O(1))
+      print("apple" in fruits)          # True
+      print("banana" in fruits)         # False
+
+      # Length
+      print(len(fruits))                # number of unique items
+    explanation: >
+      Creating a set from a list is the fastest way to deduplicate. Use discard() instead
+      of remove() when you're unsure if the element exists.
+
+  - title: "Set Operations: Union, Intersection, Difference"
+    code: |
+      team_a = {"Alice", "Bob", "Charlie", "Diana"}
+      team_b = {"Bob", "Diana", "Eve", "Frank"}
+
+      # Union — everyone in either team
+      all_members = team_a | team_b
+      print(all_members)
+      # {'Alice', 'Bob', 'Charlie', 'Diana', 'Eve', 'Frank'}
+
+      # Intersection — in both teams
+      both_teams = team_a & team_b
+      print(both_teams)     # {'Bob', 'Diana'}
+
+      # Difference — in A but NOT B
+      only_a = team_a - team_b
+      print(only_a)         # {'Alice', 'Charlie'}
+
+      # Symmetric difference — in one but NOT both
+      exclusive = team_a ^ team_b
+      print(exclusive)      # {'Alice', 'Charlie', 'Eve', 'Frank'}
+
+      # Subset check
+      seniors = {"Bob", "Diana"}
+      print(seniors <= team_a)   # True — seniors is a subset of team_a
+    explanation: >
+      Set operators read naturally: | for "or" (union), & for "and" (intersection),
+      - for "minus" (difference). Symmetric difference ^ gives the "exclusive or" of two sets.
+
+  - title: "Practical: Fast Deduplication and Lookup"
+    code: |
+      # Deduplicate a list while preserving order
+      seen = set()
+      ordered_unique = []
+      data = [3, 1, 4, 1, 5, 9, 2, 6, 5, 3]
+
+      for item in data:
+          if item not in seen:
+              seen.add(item)
+              ordered_unique.append(item)
+
+      print(ordered_unique)   # [3, 1, 4, 5, 9, 2, 6]
+
+      # Fast membership vs. list
+      allowed_users = {"alice", "bob", "charlie"}   # O(1) lookup
+      user = "dave"
+      if user not in allowed_users:
+          print(f"Access denied for {user}")
+
+      # Finding missing numbers
+      expected = set(range(1, 11))     # {1, 2, ..., 10}
+      received = {1, 2, 4, 7, 9, 10}
+      missing  = expected - received
+      print(f"Missing: {sorted(missing)}")   # Missing: [3, 5, 6, 8]
+    explanation: >
+      Using a set to track "seen" items lets you deduplicate while preserving order —
+      something a plain set() alone can't do (since sets are unordered). The missing
+      numbers pattern is a common interview technique.
+
+common_mistakes:
+  - "Using {} to create an empty set — {} creates an empty dict; use set() instead"
+  - "Trying to index a set (e.g., my_set[0]) — sets are unordered and not subscriptable"
+  - "Adding mutable items like lists to a set — raises TypeError (not hashable)"
+  - "Using .remove() when the element might not exist — use .discard() for safety"
+  - "Assuming sets preserve insertion order — they do NOT (use a dict or sorted list for order)"
+  - "Forgetting that set operations return new sets; in-place operators (|=, &=) modify in place"
+
+related_concepts:
+  - lists
+  - dictionaries
+  - tuples
+
+problem_ids:
+  - unique-elements
+  - common-friends
+  - missing-numbers
+
+glossary_terms:
+  - term: Set
+    definition: >
+      A mutable, unordered collection of unique hashable elements. Implemented as a
+      hash table for O(1) average add, remove, and membership operations.
+  - term: Union
+    definition: >
+      The set of all elements that appear in either of two sets. Written as A | B or
+      A.union(B).
+  - term: Intersection
+    definition: >
+      The set of elements common to both sets. Written as A & B or A.intersection(B).
+  - term: Difference
+    definition: >
+      The set of elements in A that are not in B. Written as A - B or A.difference(B).
+  - term: frozenset
+    definition: >
+      An immutable version of a set. Because it cannot change, it is hashable and can
+      be used as a dictionary key or as an element inside another set.

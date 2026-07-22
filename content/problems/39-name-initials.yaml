@@ -1,0 +1,58 @@
+id: name-initials
+concept_ids:
+  - input-output
+level: beginner
+tier: challenge
+difficulty: 5
+title: Name Initials Formatter
+prompt: |
+  Write a function get_initials(full_name) that takes a full name string and
+  returns the initials in uppercase with a dot after each letter.
+
+  Rules:
+    - Split the name by spaces to get the individual parts.
+    - Each part contributes one initial: its first character, uppercased.
+    - Join all initials with dots, and end with a dot.
+    - Ignore any extra whitespace (leading, trailing, or multiple spaces).
+
+  Examples:
+    get_initials('john doe')         -> 'J.D.'
+    get_initials('mary ann smith')   -> 'M.A.S.'
+    get_initials('Alice')            -> 'A.'
+    get_initials('Jean-Luc Picard')  -> 'J.P.'
+
+  Function signature:
+    def get_initials(full_name):
+starter_code: |
+  def get_initials(full_name):
+      # your code here
+      pass
+solution_code: |
+  def get_initials(full_name):
+      parts = full_name.strip().split()
+      initials = [part[0].upper() for part in parts if part]
+      return '.'.join(initials) + '.'
+function_name: get_initials
+test_cases:
+  - input: ["john doe"]
+    expected: "J.D."
+  - input: ["mary ann smith"]
+    expected: "M.A.S."
+  - input: ["Alice"]
+    expected: "A."
+  - input: ["Jean-Luc Picard"]
+    expected: "J.P."
+hidden_test_cases:
+  - input: ["  ada  lovelace  "]
+    expected: "A.L."
+  - input: ["alan mathison turing"]
+    expected: "A.M.T."
+hints:
+  - "Use str.split() (with no argument) to split on any whitespace and remove empty parts."
+  - "Use a list comprehension to get the first character of each part, uppercased."
+  - "Use '.'.join(initials) to connect them, then add a final '.' at the end."
+tags:
+  - input-output
+  - strings
+  - list-comprehension
+  - beginner

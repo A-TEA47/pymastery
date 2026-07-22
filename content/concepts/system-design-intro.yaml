@@ -1,0 +1,47 @@
+id: "system-design-intro"
+level: "expert"
+module: "architecture"
+title: "Introduction to System Design"
+prerequisites: ["advanced-algorithms", "async-programming"]
+estimated_minutes: 45
+plain_explanation: |
+  As you become an expert, the problems you solve are no longer just "how do I write this function?" but rather "how do I build this entire system?" This is System Design.
+  
+  System design is about zooming out. It's about deciding how multiple computers, databases, and services talk to each other to form a complete product like Netflix or Uber. It involves trade-offs: do we want this to be incredibly fast, or incredibly reliable? Often, you can't have both perfectly.
+  
+  In Python, this often means knowing when to use message queues (like RabbitMQ or Kafka), caching (like Redis), and load balancers to distribute traffic across many Python web servers (like FastAPI or Django).
+technical_explanation: |
+  Key concepts in system design include:
+  
+  - Scalability: Vertical scaling (making a single server bigger) vs Horizontal scaling (adding more servers).
+  - CAP Theorem: A distributed data store can simultaneously provide at most two of the three guarantees: Consistency, Availability, and Partition tolerance.
+  - Caching: Storing frequently accessed data in memory (Redis/Memcached) to reduce database load and latency.
+  - Microservices vs Monoliths: Architectural patterns for deploying services.
+  - Message Queues: Asynchronous communication using brokers (RabbitMQ, Kafka, SQS) to decouple services and handle spikes in traffic.
+examples:
+  - title: "Caching Pattern (Pseudocode)"
+    code: |
+      def get_user_profile(user_id):
+          # 1. Try to get from fast cache (e.g., Redis)
+          profile = cache.get(f"user:{user_id}")
+          
+          if profile is None:
+              # 2. If not in cache, do the slow database query
+              profile = db.query("SELECT * FROM users WHERE id = ?", user_id)
+              
+              # 3. Save it in the cache for next time
+              cache.set(f"user:{user_id}", profile, expire_in_seconds=300)
+              
+          return profile
+    explanation: "This pattern, 'cache-aside', is extremely common for scaling reads."
+common_mistakes:
+  - "Premature optimization: designing a complex microservice architecture for an app with 10 users."
+  - "Ignoring failure: always assume servers will crash and networks will fail."
+  - "Using the wrong database: e.g., using a relational DB for highly unstructured log data, or a NoSQL DB for highly relational financial transactions."
+related_concepts: ["async-programming"]
+problem_ids: []
+glossary_terms:
+  - term: "Horizontal Scaling"
+    definition: "Adding more machines to your pool of resources (scaling out)."
+  - term: "Microservice"
+    definition: "An architectural style that structures an application as a collection of loosely coupled services."

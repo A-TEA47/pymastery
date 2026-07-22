@@ -1,0 +1,45 @@
+id: var-swap
+concept_ids:
+  - variables-and-types
+level: beginner
+tier: warmup
+difficulty: 1
+title: Swap Two Values
+prompt: |
+  Write a function swap(a, b) that takes two values a and b and
+  returns a tuple (b, a) — the two values in swapped order.
+
+  Example:
+    swap(1, 2)       => (2, 1)
+    swap("hi", 42)   => (42, "hi")
+    swap(True, None) => (None, True)
+starter_code: |
+  def swap(a, b):
+      # your code here
+      pass
+solution_code: |
+  def swap(a, b):
+      return (b, a)
+function_name: swap
+test_cases:
+  - input: [1, 2]
+    expected: [2, 1]
+  - input: ["hello", "world"]
+    expected: ["world", "hello"]
+  - input: [10, 99]
+    expected: [99, 10]
+  - input: [0, -5]
+    expected: [-5, 0]
+hidden_test_cases:
+  - input: [true, false]
+    expected: [false, true]
+  - input: [3.14, 2.71]
+    expected: [2.71, 3.14]
+hints:
+  - "A tuple is written as (first, second). Just flip the order of a and b."
+  - "Python even lets you swap in one line: return b, a (the comma creates a tuple)."
+  - "The function receives two separate arguments — they don't need to be the same type."
+tags:
+  - variables
+  - tuples
+  - beginner

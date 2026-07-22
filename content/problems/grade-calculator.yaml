@@ -1,0 +1,74 @@
+id: grade-calculator
+concept_ids:
+  - type-conversion-operators
+level: beginner
+tier: challenge
+difficulty: 6
+title: Letter Grade Calculator
+prompt: |
+  Write a function letter_grade(score) that takes an integer score from
+  0 to 100 and returns the corresponding letter grade as a string:
+
+    90 - 100  =>  'A'
+    80 -  89  =>  'B'
+    70 -  79  =>  'C'
+    60 -  69  =>  'D'
+     0 -  59  =>  'F'
+
+  If score is less than 0 or greater than 100, raise a ValueError with
+  the message: "Score must be between 0 and 100"
+
+  Example:
+    letter_grade(95)  => 'A'
+    letter_grade(83)  => 'B'
+    letter_grade(55)  => 'F'
+    letter_grade(-1)  raises ValueError
+time_limit_minutes: 15
+starter_code: |
+  def letter_grade(score):
+      # your code here
+      pass
+solution_code: |
+  def letter_grade(score):
+      if score < 0 or score > 100:
+          raise ValueError("Score must be between 0 and 100")
+      if score >= 90:
+          return 'A'
+      elif score >= 80:
+          return 'B'
+      elif score >= 70:
+          return 'C'
+      elif score >= 60:
+          return 'D'
+      else:
+          return 'F'
+function_name: letter_grade
+test_cases:
+  - input: [95]
+    expected: "A"
+  - input: [83]
+    expected: "B"
+  - input: [72]
+    expected: "C"
+  - input: [65]
+    expected: "D"
+  - input: [55]
+    expected: "F"
+  - input: [100]
+    expected: "A"
+  - input: [0]
+    expected: "F"
+hidden_test_cases:
+  - input: [90]
+    expected: "A"
+  - input: [80]
+    expected: "B"
+hints:
+  - "Use if/elif/else chains. Check from highest to lowest score so the first matching condition wins."
+  - "Validate the score range FIRST before checking the grade brackets."
+  - "Use 'raise ValueError(\"...\")' to raise an exception when the score is out of range."
+tags:
+  - conditionals
+  - validation
+  - exceptions
+  - beginner

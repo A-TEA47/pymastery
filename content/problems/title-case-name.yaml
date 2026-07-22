@@ -1,0 +1,61 @@
+id: title-case-name
+concept_ids:
+  - strings
+level: beginner
+tier: challenge
+difficulty: 6
+title: Format a Full Name
+prompt: |
+  Write a function format_name(full_name) that cleans and formats a full name string:
+
+  Rules:
+    1. Strip leading and trailing whitespace from the entire string.
+    2. Split the name into words (any amount of whitespace counts as a separator).
+    3. Capitalize the first letter of each word and lowercase the rest.
+    4. Join the words back together with exactly one space between them.
+
+  Return the formatted name as a string.
+
+  Example:
+    format_name("  alice   smith  ")   => "Alice Smith"
+    format_name("JOHN   DOE")          => "John Doe"
+    format_name("mary anne fitzgerald") => "Mary Anne Fitzgerald"
+    format_name("  BOB  ")             => "Bob"
+time_limit_minutes: 15
+starter_code: |
+  def format_name(full_name):
+      # your code here
+      pass
+solution_code: |
+  def format_name(full_name):
+      words = full_name.strip().split()
+      capitalized = [word.capitalize() for word in words]
+      return " ".join(capitalized)
+function_name: format_name
+test_cases:
+  - input: ["  alice   smith  "]
+    expected: "Alice Smith"
+  - input: ["JOHN   DOE"]
+    expected: "John Doe"
+  - input: ["mary anne fitzgerald"]
+    expected: "Mary Anne Fitzgerald"
+  - input: ["  BOB  "]
+    expected: "Bob"
+hidden_test_cases:
+  - input: ["lEoNaRdO dA vInCi"]
+    expected: "Leonardo Da Vinci"
+  - input: ["   jean-luc   picard   "]
+    expected: "Jean-luc Picard"
+hints:
+  - "Use str.strip() to remove leading/trailing whitespace, then str.split() with no arguments — it splits on any whitespace and ignores extra spaces."
+  - "str.capitalize() lowercases all characters except the first, which it uppercases. Apply it to each word."
+  - "Use ' '.join(words) to join the list back into a single string with one space between each word."
+external_reference:
+  source: leetcode
+  title: "Similar: Reverse Words in a String"
+  url: "https://leetcode.com/problems/reverse-words-in-a-string/"
+tags:
+  - strings
+  - string-methods
+  - formatting
+  - beginner

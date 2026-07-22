@@ -1,0 +1,74 @@
+id: boss1-two-sum
+concept_ids:
+  - loops
+  - dictionaries
+  - lists
+level: beginner
+tier: challenge
+difficulty: 8
+title: "Boss Challenge: Two Sum Indices"
+prompt: |
+  Write a function two_sum_indices(nums, target) that finds two distinct indices
+  i and j such that nums[i] + nums[j] == target, with i < j.
+
+  Return [i, j] as a list. If multiple valid pairs exist, return the one with
+  the smallest i; among those, pick the smallest j.
+  If no solution exists, return [].
+
+  Examples:
+    two_sum_indices([2, 7, 11, 15], 9)   -> [0, 1]   (2+7=9)
+    two_sum_indices([3, 2, 4], 6)        -> [1, 2]   (2+4=6)
+    two_sum_indices([1, 2, 3, 4], 5)     -> [0, 3]   (smallest i=0; j=3 because 1+4=5, then also i=1,j=2 but i=0 wins)
+    two_sum_indices([1, 2, 3], 100)      -> []
+
+  Note: [0, 3] wins over [1, 2] because i=0 < i=1.
+
+  Function signature:
+    def two_sum_indices(nums, target):
+starter_code: |
+  def two_sum_indices(nums, target):
+      # your code here
+      pass
+solution_code: |
+  def two_sum_indices(nums, target):
+      seen = {}  # value -> earliest index
+      for j in range(len(nums)):
+          complement = target - nums[j]
+          if complement in seen:
+              i = seen[complement]
+              return [i, j]
+          # Only record first occurrence of each value
+          if nums[j] not in seen:
+              seen[nums[j]] = j
+      return []
+function_name: two_sum_indices
+test_cases:
+  - input: [[2, 7, 11, 15], 9]
+    expected: [0, 1]
+  - input: [[3, 2, 4], 6]
+    expected: [1, 2]
+  - input: [[1, 2, 3, 4], 5]
+    expected: [0, 3]
+  - input: [[1, 2, 3], 100]
+    expected: []
+hidden_test_cases:
+  - input: [[5, 5], 10]
+    expected: [0, 1]
+  - input: [[], 5]
+    expected: []
+hints:
+  - "Use a dictionary to remember which numbers you've seen and their indices."
+  - "As you loop with index j, compute complement = target - nums[j]. If complement is in seen, you found your pair."
+  - "The hash map approach gives O(n) time — far better than a nested loop."
+  - "Only store the first occurrence of each value so the smallest i is always used."
+external_reference:
+  source: leetcode
+  title: "Similar: Two Sum"
+  url: "https://leetcode.com/problems/two-sum/"
+tags:
+  - loops
+  - dictionaries
+  - lists
+  - hash-map
+  - beginner
+  - boss-challenge

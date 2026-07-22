@@ -1,0 +1,47 @@
+id: "setting-up-python"
+level: "beginner"
+module: "getting-started"
+title: "Setting Up Python & Your First Script"
+prerequisites: []
+estimated_minutes: 10
+plain_explanation: |
+  Python is a programming language — a way to give instructions to a computer. Before you can write Python code, you need to know how to run it. The simplest way to run Python code is to type it, and then Python reads your instructions and does what you said.
+
+  The most basic thing you can do in Python is print something — make the computer show you a message. You do that with print(). Everything inside the parentheses gets shown on screen.
+
+  Right now you're using PyMastery, which runs Python directly in your browser using a technology called Pyodide. You don't need to install anything — just write code and hit Run.
+technical_explanation: |
+  Python is an interpreted, high-level, dynamically typed language. "Interpreted" means that Python code is executed line-by-line by an interpreter rather than compiled to machine code ahead of time.
+
+  The print() function writes its argument(s) to standard output (stdout). In interactive or script contexts, it appends a newline by default. print() can accept multiple arguments separated by commas, a sep parameter for the separator, and an end parameter for what to print at the end.
+
+  PyMastery uses Pyodide, which is CPython compiled to WebAssembly. This means you run a real Python 3.11+ interpreter directly in your browser tab — no server needed, no installation, and it works offline after the first load.
+examples:
+  - title: "Hello, World!"
+    code: |
+      print("Hello, World!")
+      print("Welcome to PyMastery!")
+    explanation: "The classic first program. print() shows text inside the quotes."
+  - title: "Multiple print statements"
+    code: |
+      print("My name is Python")
+      print("I am", 30, "years old")
+      print("1 + 1 =", 1 + 1)
+    explanation: "print() can handle text, numbers, and expressions together."
+  - title: "print() options"
+    code: |
+      print("one", "two", "three", sep="-")
+      print("no newline at end", end=" ← here\n")
+      print()  # prints a blank line
+    explanation: "sep controls what goes between items; end controls what prints after."
+common_mistakes:
+  - "Forgetting the parentheses: print \"hello\" is Python 2 syntax and won't work in Python 3."
+  - "Mismatched quotes: opening with \" and closing with ' causes a SyntaxError."
+  - "print is case-sensitive — Print() or PRINT() won't work."
+related_concepts: ["variables-and-types", "strings"]
+problem_ids: ["first-print", "print-math", "print-pattern"]
+glossary_terms:
+  - term: "interpreter"
+    definition: "A program that reads and executes code line by line, as opposed to a compiler which translates all code first."
+  - term: "standard output (stdout)"
+    definition: "The default place where a program sends its text output — usually your terminal or the output panel."

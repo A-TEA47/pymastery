@@ -1,0 +1,47 @@
+id: "classes-and-objects"
+level: "intermediate"
+module: "object-oriented-programming"
+title: "Classes and Objects (OOP)"
+prerequisites: ["functions", "dictionaries"]
+estimated_minutes: 30
+plain_explanation: |
+  Object-Oriented Programming (OOP) is a way to organize code by grouping data and the functions that operate on that data into a single unit called an "object". 
+  
+  Think of a class as a blueprint, and an object as a specific thing built from that blueprint. For example, a "Car" class is a blueprint that says every car has a color, a model, and can drive. A specific red Toyota is an object (or instance) of that class.
+
+  In Python, everything is an object! When you create a list or a dictionary, you are creating an instance of the list or dict class. Now, you will learn how to make your own custom classes.
+technical_explanation: |
+  A class is defined using the `class` keyword. The `__init__` method (a constructor or initializer) is called when a new instance is created. It is used to initialize the object's attributes.
+
+  Instance methods always take `self` as their first parameter. `self` refers to the specific instance of the class that the method is being called on. It allows the method to access and modify the object's attributes.
+examples:
+  - title: "Defining a simple class"
+    code: |
+      class Dog:
+          def __init__(self, name, age):
+              self.name = name
+              self.age = age
+              
+          def bark(self):
+              return f"{self.name} says woof!"
+              
+      # Creating instances (objects)
+      buddy = Dog("Buddy", 3)
+      lucy = Dog("Lucy", 5)
+      
+      print(buddy.name)
+      print(lucy.bark())
+    explanation: "The blueprint is Dog. buddy and lucy are specific instances."
+common_mistakes:
+  - "Forgetting 'self' as the first parameter in instance methods."
+  - "Forgetting the double underscores in __init__."
+  - "Trying to access an instance attribute without using 'self.' inside a method."
+related_concepts: ["inheritance", "dunder-methods"]
+problem_ids: []
+glossary_terms:
+  - term: "class"
+    definition: "A blueprint for creating objects, defining initial values for state (attributes) and implementations of behavior (methods)."
+  - term: "object/instance"
+    definition: "A specific entity built from a class."
+  - term: "self"
+    definition: "A reference to the current instance of the class, used to access variables and methods associated with the object."

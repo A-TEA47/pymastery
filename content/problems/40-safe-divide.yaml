@@ -1,0 +1,51 @@
+id: safe-divide
+concept_ids:
+  - error-basics
+level: beginner
+tier: warmup
+difficulty: 2
+title: Safe Division
+prompt: |
+  Write a function safe_divide(a, b) that returns the result of dividing a by b.
+  If b is 0, return None instead of raising a ZeroDivisionError.
+
+  Examples:
+    safe_divide(10, 2)   -> 5.0
+    safe_divide(7, 0)    -> None
+    safe_divide(0, 5)    -> 0.0
+    safe_divide(-9, 3)   -> -3.0
+
+  Function signature:
+    def safe_divide(a, b):
+starter_code: |
+  def safe_divide(a, b):
+      # your code here
+      pass
+solution_code: |
+  def safe_divide(a, b):
+      if b == 0:
+          return None
+      return a / b
+function_name: safe_divide
+test_cases:
+  - input: [10, 2]
+    expected: 5.0
+  - input: [7, 0]
+    expected: null
+  - input: [0, 5]
+    expected: 0.0
+  - input: [-9, 3]
+    expected: -3.0
+hidden_test_cases:
+  - input: [1, 0]
+    expected: null
+  - input: [100, 25]
+    expected: 4.0
+hints:
+  - "Check if b equals 0 before dividing."
+  - "Use an if statement to return None early, or use a try/except block."
+tags:
+  - error-basics
+  - exceptions
+  - arithmetic
+  - beginner

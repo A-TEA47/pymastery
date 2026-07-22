@@ -1,0 +1,46 @@
+id: first-print
+concept_ids:
+  - setting-up-python
+level: beginner
+tier: warmup
+difficulty: 1
+title: Say Hello
+prompt: |
+  Write a function greet(name) that takes a person's name as a string
+  and returns the greeting string 'Hello, {name}!' where {name} is
+  replaced by the actual name passed in.
+
+  Example:
+    greet("Alice") => "Hello, Alice!"
+    greet("World") => "Hello, World!"
+starter_code: |
+  def greet(name):
+      # your code here
+      pass
+solution_code: |
+  def greet(name):
+      return f"Hello, {name}!"
+function_name: greet
+test_cases:
+  - input: ["Alice"]
+    expected: "Hello, Alice!"
+  - input: ["World"]
+    expected: "Hello, World!"
+  - input: ["PyMastery"]
+    expected: "Hello, PyMastery!"
+  - input: ["Bob"]
+    expected: "Hello, Bob!"
+hidden_test_cases:
+  - input: [""]
+    expected: "Hello, !"
+  - input: ["123"]
+    expected: "Hello, 123!"
+hints:
+  - "Use an f-string: f'Hello, {name}!' to embed the variable directly in the string."
+  - "Don't forget the exclamation mark at the end of the greeting."
+  - "The function should use return, not print — the caller decides what to do with the result."
+tags:
+  - strings
+  - f-strings
+  - functions
+  - beginner

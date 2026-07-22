@@ -1,0 +1,76 @@
+id: boss1-count-words
+concept_ids:
+  - loops
+  - dictionaries
+  - strings
+level: beginner
+tier: challenge
+difficulty: 7
+title: "Boss Challenge: Word Frequency Map"
+prompt: |
+  Write a function word_count_map(text) that takes a string of text and returns
+  a dictionary of word -> count, but ONLY for words that appear MORE THAN ONCE.
+  The result should be sorted by count descending (most frequent first).
+
+  Processing rules:
+    1. Split the text into words by whitespace.
+    2. For each word, remove any non-letter characters (keep only a-z, A-Z).
+    3. Convert to lowercase.
+    4. Skip any resulting empty strings.
+    5. Count occurrences of each word.
+    6. Return only words with count > 1, sorted by count descending.
+       If counts are equal, order does not matter.
+
+  Examples:
+    word_count_map("the cat sat on the mat the cat")
+    -> {'the': 3, 'cat': 2}
+
+    word_count_map("hello world")
+    -> {}
+
+    word_count_map("Go go GO stop go")
+    -> {'go': 4}
+
+  Function signature:
+    def word_count_map(text):
+starter_code: |
+  def word_count_map(text):
+      # your code here
+      pass
+solution_code: |
+  def word_count_map(text):
+      counts = {}
+      for raw_word in text.split():
+          word = ''.join(ch for ch in raw_word if ch.isalpha()).lower()
+          if word:
+              counts[word] = counts.get(word, 0) + 1
+
+      filtered = {word: count for word, count in counts.items() if count > 1}
+      return dict(sorted(filtered.items(), key=lambda item: item[1], reverse=True))
+function_name: word_count_map
+test_cases:
+  - input: ["the cat sat on the mat the cat"]
+    expected: {"the": 3, "cat": 2}
+  - input: ["hello world"]
+    expected: {}
+  - input: ["Go go GO stop go"]
+    expected: {"go": 4}
+  - input: ["one two one two three three three"]
+    expected: {"three": 3, "one": 2, "two": 2}
+hidden_test_cases:
+  - input: ["well, well, well... what do we have here?"]
+    expected: {"well": 3}
+  - input: [""]
+    expected: {}
+hints:
+  - "Use a dictionary to count frequencies: counts[word] = counts.get(word, 0) + 1"
+  - "Use ''.join(ch for ch in word if ch.isalpha()) to strip non-letter characters."
+  - "Filter the dictionary using a dict comprehension: {w: c for w, c in counts.items() if c > 1}"
+  - "Sort using sorted(..., key=lambda item: item[1], reverse=True) then wrap in dict()."
+tags:
+  - loops
+  - dictionaries
+  - strings
+  - sorting
+  - beginner
+  - boss-challenge

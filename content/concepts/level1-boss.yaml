@@ -1,0 +1,51 @@
+id: "level1-boss"
+level: "beginner"
+module: "boss-challenge"
+title: "Level 1 Boss Challenge"
+prerequisites: ["error-basics", "functions", "loops", "conditionals", "lists", "dictionaries"]
+estimated_minutes: 60
+plain_explanation: |
+  Congratulations! You've learned the foundations of Python: variables, control flow, loops, data structures, functions, and error handling. It's time to put all of these pieces together.
+
+  This boss challenge is a set of harder, mixed-topic problems. There is no new concept to learn here — it's purely a test of your problem-solving skills and your ability to combine the tools you already know. 
+
+  Take your time, read the requirements carefully, and use the playground if you need to experiment before submitting your answer. Good luck!
+technical_explanation: |
+  The problems in this section are designed to mimic algorithmic challenges you might see in coding interviews or competitive programming. They will require you to write functions that manipulate strings, iterate through dictionaries, handle edge cases with conditionals, and optimize loops.
+
+  Remember to consider:
+  - Time complexity: can you use a dictionary instead of a nested loop?
+  - Edge cases: what happens if the input is an empty list or string?
+  - Variable scoping: ensure your counters and accumulators are correctly scoped.
+examples:
+  - title: "Combining concepts"
+    code: |
+      def sample_boss_problem(numbers):
+          # Using a dictionary to count frequencies (Data Structures)
+          counts = {}
+          for n in numbers:  # Iteration (Loops)
+              if n in counts:  # Conditionals
+                  counts[n] += 1
+              else:
+                  counts[n] = 1
+          
+          # Finding the maximum using a function (Functions & Scope)
+          max_count = 0
+          most_frequent = None
+          for num, count in counts.items():
+              if count > max_count:
+                  max_count = count
+                  most_frequent = num
+                  
+          return most_frequent
+
+      result = sample_boss_problem([1, 3, 2, 3, 4, 3, 5])
+      print(f"Most frequent: {result}")
+    explanation: "Notice how this solution combines dictionaries, loops, and conditionals."
+common_mistakes:
+  - "Rushing to write code before fully understanding the problem."
+  - "Forgetting to return the result from the function (returning None by default)."
+  - "Modifying a list or dictionary while iterating over it."
+related_concepts: []
+problem_ids: ["boss1-count-words", "boss1-top-scorer", "boss1-two-sum", "boss1-anagram-check", "boss1-roman-to-int"]
+glossary_terms: []

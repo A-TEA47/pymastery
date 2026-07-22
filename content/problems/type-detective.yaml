@@ -1,0 +1,68 @@
+id: type-detective
+concept_ids:
+  - variables-and-types
+level: beginner
+tier: challenge
+difficulty: 5
+title: Type Detective
+prompt: |
+  Write a function describe_type(value) that inspects the given value
+  and returns a string naming its type:
+    - Return 'boolean'  if value is a bool
+    - Return 'integer'  if value is an int (but not a bool)
+    - Return 'float'    if value is a float
+    - Return 'string'   if value is a str
+    - Return 'none'     if value is None
+
+  IMPORTANT: In Python, bool is a subclass of int, so isinstance(True, int)
+  returns True. You MUST check for bool BEFORE checking for int.
+
+  Example:
+    describe_type(42)      => 'integer'
+    describe_type(3.14)    => 'float'
+    describe_type("hello") => 'string'
+    describe_type(True)    => 'boolean'
+    describe_type(None)    => 'none'
+time_limit_minutes: 15
+starter_code: |
+  def describe_type(value):
+      # your code here
+      pass
+solution_code: |
+  def describe_type(value):
+      if isinstance(value, bool):
+          return 'boolean'
+      elif isinstance(value, int):
+          return 'integer'
+      elif isinstance(value, float):
+          return 'float'
+      elif isinstance(value, str):
+          return 'string'
+      elif value is None:
+          return 'none'
+function_name: describe_type
+test_cases:
+  - input: [42]
+    expected: "integer"
+  - input: [3.14]
+    expected: "float"
+  - input: ["hello"]
+    expected: "string"
+  - input: [true]
+    expected: "boolean"
+  - input: [null]
+    expected: "none"
+hidden_test_cases:
+  - input: [false]
+    expected: "boolean"
+  - input: [0]
+    expected: "integer"
+hints:
+  - "Use isinstance(value, type) to check the type of a value."
+  - "Check bool FIRST — before int — because bool is a subclass of int in Python."
+  - "Use 'value is None' (not isinstance) to check for None, since None is a singleton."
+tags:
+  - types
+  - isinstance
+  - conditionals
+  - beginner

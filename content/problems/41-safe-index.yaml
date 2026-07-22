@@ -1,0 +1,56 @@
+id: safe-index
+concept_ids:
+  - error-basics
+level: beginner
+tier: applied
+difficulty: 3
+title: Safe List Index Access
+prompt: |
+  Write a function safe_get(lst, index, default=None) that returns the element
+  at lst[index]. If the index is out of range, return default instead of
+  raising an IndexError.
+
+  Examples:
+    safe_get([1, 2, 3], 1)         -> 2
+    safe_get([1, 2, 3], 5)         -> None
+    safe_get([1, 2, 3], 5, -1)     -> -1
+    safe_get([], 0)                -> None
+    safe_get(['a', 'b'], -1)       -> 'b'    (negative indexing still works)
+    safe_get(['a', 'b'], -10, 'x') -> 'x'   (out-of-range negative index)
+
+  Function signature:
+    def safe_get(lst, index, default=None):
+starter_code: |
+  def safe_get(lst, index, default=None):
+      # your code here
+      pass
+solution_code: |
+  def safe_get(lst, index, default=None):
+      try:
+          return lst[index]
+      except IndexError:
+          return default
+function_name: safe_get
+test_cases:
+  - input: [[1, 2, 3], 1]
+    expected: 2
+  - input: [[1, 2, 3], 5]
+    expected: null
+  - input: [[1, 2, 3], 5, -1]
+    expected: -1
+  - input: [[], 0]
+    expected: null
+hidden_test_cases:
+  - input: [["a", "b"], -1]
+    expected: "b"
+  - input: [["a", "b"], -10, "x"]
+    expected: "x"
+hints:
+  - "Use a try/except block and catch IndexError."
+  - "Return default in the except block."
+  - "The default parameter already has a default value of None, so callers don't have to pass it."
+tags:
+  - error-basics
+  - exceptions
+  - lists
+  - beginner

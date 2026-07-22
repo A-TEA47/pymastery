@@ -1,0 +1,62 @@
+id: word-frequency
+concept_ids:
+  - dictionaries
+level: beginner
+tier: warmup
+difficulty: 3
+title: Word Frequency Counter
+prompt: |
+  Write a function word_freq(text) that takes a single string, splits it into
+  words by splitting on spaces, and returns a dictionary mapping each unique
+  word to the number of times it appears.
+
+  - Use str.split(" ") or str.split() — either is acceptable.
+  - Words are case-sensitive: "The" and "the" are different words.
+  - If the input string is empty, return an empty dictionary.
+
+  Examples:
+    word_freq("the cat sat on the mat")
+      -> {"the": 2, "cat": 1, "sat": 1, "on": 1, "mat": 1}
+
+    word_freq("hello hello hello")
+      -> {"hello": 3}
+
+    word_freq("one")
+      -> {"one": 1}
+starter_code: |
+  def word_freq(text):
+      # your code here
+      pass
+solution_code: |
+  def word_freq(text):
+      if not text:
+          return {}
+      freq = {}
+      for word in text.split():
+          freq[word] = freq.get(word, 0) + 1
+      return freq
+function_name: word_freq
+test_cases:
+  - input: ["the cat sat on the mat"]
+    expected: {"the": 2, "cat": 1, "sat": 1, "on": 1, "mat": 1}
+  - input: ["hello hello hello"]
+    expected: {"hello": 3}
+  - input: ["one"]
+    expected: {"one": 1}
+  - input: ["a b c a b a"]
+    expected: {"a": 3, "b": 2, "c": 1}
+  - input: [""]
+    expected: {}
+hidden_test_cases:
+  - input: ["the The the"]
+    expected: {"the": 2, "The": 1}
+  - input: ["go go go stop stop"]
+    expected: {"go": 3, "stop": 2}
+hints:
+  - "Use a dictionary. For each word, check if it's already a key — if yes, increment, if no, set to 1."
+  - "The dict.get(key, default) method is handy: freq.get(word, 0) + 1."
+  - "str.split() with no arguments splits on any whitespace and removes empty strings."
+tags:
+  - dictionaries
+  - strings
+  - frequency-counting

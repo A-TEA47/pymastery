@@ -1,0 +1,193 @@
+id: lists
+level: beginner
+module: data-structures
+title: "Lists: Python's Workhorse Collection"
+prerequisites:
+  - variables-and-types
+estimated_minutes: 35
+
+plain_explanation: |
+  A list is an ordered collection of items — like a shopping list or a playlist. Unlike a
+  variable that holds one thing, a list can hold many things at once, and you can change
+  it whenever you like. Items can be numbers, strings, other lists, or anything else —
+  they don't all have to be the same type.
+
+  Just like strings, lists use zero-based indexing: the first item is at position 0.
+  You can also slice a list to grab a portion of it, exactly the same way you slice
+  strings. The big difference is that lists are mutable — you can add, remove, and change
+  items after the list is created.
+
+  Adding items: append() adds one item to the end; extend() adds many items from another
+  collection; insert() puts an item at a specific position. Removing items: remove()
+  deletes by value; pop() removes and returns by index (last item if no index given).
+
+  Lists also know how to sort themselves (.sort() changes them in place; sorted() makes a
+  new sorted copy), reverse themselves, and tell you their length with len().
+
+technical_explanation: |
+  A Python list is a **mutable, ordered sequence** stored as a dynamic array of object
+  references. It supports random access in O(1), amortized O(1) append, and O(n) insert/
+  remove in the middle.
+
+  **Creation:**
+  ```python
+  empty = []
+  nums  = [1, 2, 3]
+  mixed = [1, "two", 3.0, True]
+  nested = [[1,2], [3,4]]
+  from_range = list(range(5))    # [0, 1, 2, 3, 4]
+  ```
+
+  **Indexing & Slicing:** same rules as strings (`lst[i]`, `lst[start:stop:step]`).
+  Negative indices work identically.
+
+  **Mutability:** unlike strings, items can be assigned directly: `lst[0] = 99`.
+
+  **Key methods:**
+  | Method | Description | Complexity |
+  |---|---|---|
+  | `.append(x)` | Add x to end | O(1) amortized |
+  | `.extend(iterable)` | Add all items from iterable | O(k) |
+  | `.insert(i, x)` | Insert x before index i | O(n) |
+  | `.remove(x)` | Remove first occurrence of x | O(n) |
+  | `.pop(i=-1)` | Remove & return item at i | O(n) or O(1) |
+  | `.sort(key, reverse)` | In-place sort (Timsort) | O(n log n) |
+  | `.reverse()` | In-place reversal | O(n) |
+  | `.index(x)` | First index of x | O(n) |
+  | `.count(x)` | Count occurrences of x | O(n) |
+  | `.clear()` | Remove all items | O(n) |
+  | `.copy()` | Shallow copy | O(n) |
+
+  **`len(lst)`** returns the number of items in O(1).
+
+  **`in` operator:** `x in lst` checks membership in O(n) (use a set for O(1) lookup).
+
+  **List comprehensions** (preview): `[x*2 for x in lst]` — elegant one-line list building.
+
+examples:
+  - title: "Creating and Accessing Lists"
+    code: |
+      # Creating lists
+      fruits = ["apple", "banana", "cherry"]
+      numbers = list(range(1, 6))   # [1, 2, 3, 4, 5]
+      mixed = [42, "hello", True, 3.14]
+
+      # Indexing
+      print(fruits[0])    # "apple"
+      print(fruits[-1])   # "cherry"  (last item)
+
+      # Slicing
+      print(numbers[1:4]) # [2, 3, 4]
+      print(numbers[::-1])# [5, 4, 3, 2, 1]  (reversed)
+
+      # Mutability — changing an item
+      fruits[1] = "blueberry"
+      print(fruits)       # ['apple', 'blueberry', 'cherry']
+
+      # Membership test
+      print("apple" in fruits)   # True
+      print("mango" in fruits)   # False
+    explanation: >
+      Lists use the same indexing and slicing rules as strings, but unlike strings you can
+      assign new values to any index directly.
+
+  - title: "Adding and Removing Items"
+    code: |
+      items = [10, 20, 30]
+
+      # Adding
+      items.append(40)          # [10, 20, 30, 40]
+      items.extend([50, 60])    # [10, 20, 30, 40, 50, 60]
+      items.insert(1, 15)       # [10, 15, 20, 30, 40, 50, 60]
+      print(items)
+
+      # Removing
+      items.remove(15)          # removes first occurrence of 15
+      last = items.pop()        # removes and returns 60
+      third = items.pop(2)      # removes and returns item at index 2 (30)
+      print(items)              # [10, 20, 40, 50]
+      print(f"Popped: {last}, {third}")
+
+      # Clearing
+      backup = items.copy()     # shallow copy
+      items.clear()
+      print(items)              # []
+      print(backup)             # [10, 20, 40, 50]
+    explanation: >
+      append() and extend() differ: append([1,2]) adds the list as one item; extend([1,2])
+      adds 1 and 2 as separate items. pop() is handy when you need the removed value.
+
+  - title: "Sorting and Useful Patterns"
+    code: |
+      scores = [88, 42, 95, 67, 73]
+
+      # In-place sort (modifies original)
+      scores.sort()
+      print(scores)              # [42, 67, 73, 88, 95]
+
+      # Reverse sort
+      scores.sort(reverse=True)
+      print(scores)              # [95, 88, 73, 67, 42]
+
+      # sorted() — returns new list, original unchanged
+      names = ["Charlie", "Alice", "Bob"]
+      sorted_names = sorted(names)
+      print(sorted_names)        # ['Alice', 'Bob', 'Charlie']
+      print(names)               # ['Charlie', 'Alice', 'Bob']  (unchanged)
+
+      # Useful built-ins with lists
+      nums = [3, 1, 4, 1, 5, 9]
+      print(len(nums))           # 6
+      print(sum(nums))           # 23
+      print(min(nums))           # 1
+      print(max(nums))           # 9
+
+      # List multiplication
+      zeros = [0] * 5
+      print(zeros)               # [0, 0, 0, 0, 0]
+    explanation: >
+      .sort() sorts in place and returns None. sorted() creates a new sorted list.
+      len(), sum(), min(), max() all work directly on lists — no need for loops.
+
+common_mistakes:
+  - "Calling .sort() on a list and assigning it: 'lst = lst.sort()' makes lst None"
+  - "Using .append(another_list) when you meant .extend() — appends the list as one element"
+  - "Modifying a list while iterating over it — causes skipped or repeated items"
+  - "Confusing copy() (shallow) with deepcopy() — nested lists still share references"
+  - "Forgetting that .remove() only removes the FIRST occurrence of the value"
+  - "Assuming 'lst2 = lst1' creates a copy — it just creates another reference to the same list"
+
+related_concepts:
+  - variables-and-types
+  - strings
+  - tuples
+  - dictionaries
+  - sets
+  - loops
+
+problem_ids:
+  - sum-of-list
+  - find-max
+  - remove-duplicates
+
+glossary_terms:
+  - term: Mutable
+    definition: >
+      An object whose content can be changed after it is created. Lists are mutable;
+      strings and tuples are immutable.
+  - term: Append
+    definition: >
+      The .append(x) method adds a single item x to the end of a list in O(1) amortized
+      time. It modifies the list in place and returns None.
+  - term: Slice
+    definition: >
+      A sub-list created by the lst[start:stop:step] syntax. Slicing a list always returns
+      a new list (a shallow copy of the selected elements).
+  - term: In-place
+    definition: >
+      An operation that modifies the original object directly rather than creating a new
+      one. List methods like .sort(), .reverse(), and .append() are in-place.
+  - term: Dynamic Array
+    definition: >
+      The underlying storage of a Python list. It automatically grows (typically doubles)
+      when capacity is exceeded, giving amortized O(1) append performance.

@@ -1,0 +1,95 @@
+id: "error-basics"
+level: "beginner"
+module: "error-handling"
+title: "Error Basics: Tracebacks & try/except"
+prerequisites: ["functions", "conditionals"]
+estimated_minutes: 20
+plain_explanation: |
+  When Python encounters something it can't handle — like dividing by zero or looking up a key that doesn't exist — it raises an error and prints a traceback. A traceback is Python's way of telling you exactly what went wrong and where.
+
+  The most important part of a traceback is the last line. It tells you the error type (like ValueError or TypeError) followed by a description. Above it, you'll see which line of your code triggered it.
+
+  You can handle expected errors with try/except. Wrap the risky code in a try block, and if an error occurs, Python jumps to the except block instead of crashing your program. This is called "catching" an exception.
+technical_explanation: |
+  Python uses an exception-based error handling model. All exceptions are objects inheriting from BaseException. The most common ones inherit from Exception (which is a subclass of BaseException).
+
+  Common built-in exceptions:
+  - TypeError: wrong type passed to an operation
+  - ValueError: correct type but inappropriate value
+  - NameError: reference to an undefined name
+  - IndexError: list index out of range
+  - KeyError: dictionary key not found
+  - ZeroDivisionError: division by zero
+  - AttributeError: attribute doesn't exist on object
+
+  The try/except/else/finally pattern: code in try runs normally; if an exception is raised, Python searches for a matching except clause; else runs only if no exception occurred; finally always runs.
+
+  Catch specific exception types — bare except: catches everything including SystemExit and KeyboardInterrupt, which is almost never what you want.
+examples:
+  - title: "Reading a traceback"
+    code: |
+      # This will raise a ZeroDivisionError
+      # Read the error message carefully!
+      try:
+          result = 10 / 0
+      except ZeroDivisionError as e:
+          print(f"Caught an error: {e}")
+          print("We handled it gracefully!")
+    explanation: "We wrap the risky code in try, and catch the specific error type."
+  - title: "Common error types"
+    code: |
+      # TypeError
+      try:
+          result = "hello" + 5
+      except TypeError as e:
+          print(f"TypeError: {e}")
+
+      # ValueError
+      try:
+          number = int("not a number")
+      except ValueError as e:
+          print(f"ValueError: {e}")
+
+      # KeyError
+      data = {"a": 1, "b": 2}
+      try:
+          val = data["c"]
+      except KeyError as e:
+          print(f"KeyError: key {e} not found")
+
+      print("Program continues normally!")
+    explanation: "Each exception type tells you something specific about what went wrong."
+  - title: "try / except / else / finally"
+    code: |
+      def safe_divide(a, b):
+          try:
+              result = a / b
+          except ZeroDivisionError:
+              print("Can't divide by zero!")
+              return None
+          else:
+              # Only runs if no exception
+              print(f"Division succeeded: {result}")
+              return result
+          finally:
+              # Always runs, even on error
+              print("safe_divide complete")
+
+      safe_divide(10, 2)
+      print("---")
+      safe_divide(10, 0)
+    explanation: "else runs only on success; finally always runs — great for cleanup."
+common_mistakes:
+  - "Using bare 'except:' with no type — this catches KeyboardInterrupt and SystemExit, making it impossible to Ctrl+C your program."
+  - "Catching exceptions too broadly — catch the specific type you expect, not Exception for everything."
+  - "Ignoring the error type in the traceback — the last line is the most important part."
+  - "Putting too much code in the try block — only wrap the line(s) that might fail."
+related_concepts: ["functions", "input-output"]
+problem_ids: ["safe-divide", "safe-index", "parse-number"]
+glossary_terms:
+  - term: "exception"
+    definition: "An error object that Python raises when something goes wrong during execution."
+  - term: "traceback"
+    definition: "The error report Python prints when an exception isn't caught, showing the chain of function calls that led to the error."
+  - term: "try/except"
+    definition: "Python's mechanism for catching and handling exceptions gracefully."

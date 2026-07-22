@@ -1,0 +1,66 @@
+id: boss1-top-scorer
+concept_ids:
+  - dictionaries
+  - loops
+level: beginner
+tier: challenge
+difficulty: 7
+title: "Boss Challenge: Top N Scorers"
+prompt: |
+  Write a function top_n_scorers(scores, n) that takes a dictionary mapping
+  player names (strings) to their scores (integers), and returns a list of
+  the top n player names sorted by score descending.
+
+  Tie-breaking rule: if two players have the same score, sort them alphabetically
+  (A before B).
+
+  If n is larger than the number of players, return all players (sorted).
+  If n is 0 or the dictionary is empty, return an empty list.
+
+  Examples:
+    top_n_scorers({'Alice': 50, 'Bob': 80, 'Carol': 70}, 2)
+    -> ['Bob', 'Carol']
+
+    top_n_scorers({'Alice': 50, 'Bob': 50, 'Carol': 70}, 2)
+    -> ['Carol', 'Alice']    # Alice and Bob tied at 50; Alice comes first alphabetically
+
+    top_n_scorers({}, 3)
+    -> []
+
+  Function signature:
+    def top_n_scorers(scores, n):
+starter_code: |
+  def top_n_scorers(scores, n):
+      # your code here
+      pass
+solution_code: |
+  def top_n_scorers(scores, n):
+      if not scores or n == 0:
+          return []
+      sorted_players = sorted(scores.keys(), key=lambda name: (-scores[name], name))
+      return sorted_players[:n]
+function_name: top_n_scorers
+test_cases:
+  - input: [{"Alice": 50, "Bob": 80, "Carol": 70}, 2]
+    expected: ["Bob", "Carol"]
+  - input: [{"Alice": 50, "Bob": 50, "Carol": 70}, 2]
+    expected: ["Carol", "Alice"]
+  - input: [{}, 3]
+    expected: []
+  - input: [{"Alice": 100, "Bob": 90, "Carol": 80}, 0]
+    expected: []
+hidden_test_cases:
+  - input: [{"Alice": 100, "Bob": 90, "Carol": 80}, 5]
+    expected: ["Alice", "Bob", "Carol"]
+  - input: [{"Zara": 60, "Anna": 60, "Mike": 60}, 2]
+    expected: ["Anna", "Mike"]
+hints:
+  - "Sort using a tuple key: (-score, name) to sort by score descending, then name ascending."
+  - "Use sorted(scores.keys(), key=lambda name: (-scores[name], name))"
+  - "Slice the result to get only the top n: sorted_list[:n]"
+tags:
+  - dictionaries
+  - loops
+  - sorting
+  - beginner
+  - boss-challenge

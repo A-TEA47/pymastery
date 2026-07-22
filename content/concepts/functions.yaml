@@ -1,0 +1,196 @@
+id: functions
+level: beginner
+module: functions
+title: "Functions: def, Parameters & Return Values"
+prerequisites:
+  - conditionals
+  - loops
+estimated_minutes: 40
+
+plain_explanation: |
+  A function is a named, reusable block of code that you can run whenever you need it.
+  Think of it like a recipe: you write it once and can follow it many times, changing
+  the ingredients (inputs) each time. Without functions, every time you needed the same
+  logic you'd have to copy and paste it — functions eliminate that repetition.
+
+  You define a function with `def`, give it a name, list its inputs (parameters) in
+  parentheses, and write the code in an indented block. When you want to use the function,
+  you call it by name and provide the actual values (arguments). The `return` statement
+  sends a result back to whoever called the function.
+
+  Functions can have default parameter values, so callers don't always have to provide
+  every argument. You can also write functions that accept any number of positional
+  arguments with *args, or any number of keyword arguments with **kwargs. These are
+  advanced but powerful features.
+
+  A docstring is a string written right after `def function_name():`. It documents what
+  the function does, its parameters, and its return value. Good docstrings make your
+  code self-explanatory — a gift to your future self and your teammates.
+
+technical_explanation: |
+  **Basic syntax:**
+  ```python
+  def function_name(param1, param2):
+      """Docstring: what this function does."""
+      # body
+      return result
+  ```
+  If `return` is omitted (or bare `return`), the function returns `None`.
+
+  **Parameter types:**
+  - **Positional:** `def f(a, b)` — must be passed in order
+  - **Default:** `def f(a, b=10)` — b has a default; can be omitted
+  - **Keyword (at call site):** `f(a=1, b=2)` — order doesn't matter
+  - **`*args`:** collects extra positional args into a tuple
+  - **`**kwargs`:** collects extra keyword args into a dict
+  - **Keyword-only (after `*`):** `def f(a, *, key)` — key must be passed by keyword
+
+  **Docstring formats:** plain text or structured (Google, NumPy, reStructuredText style).
+
+  **First-class functions:** functions are objects in Python — they can be stored in
+  variables, passed as arguments, and returned from other functions.
+
+  **Return values:** `return a, b` returns a tuple; multiple assignment unpacks it:
+  `x, y = f()`.
+
+  **Call stack:** each function call creates a new stack frame with its own local
+  namespace. Frames are pushed on call and popped on return.
+
+  **Pure functions:** functions with no side effects (don't modify external state, always
+  produce the same output for the same input) are easier to test and reason about.
+
+examples:
+  - title: "Defining and Calling Functions"
+    code: |
+      # Basic function with two parameters
+      def greet(name, greeting="Hello"):
+          """Return a personalised greeting string."""
+          return f"{greeting}, {name}!"
+
+      # Calling with positional arguments
+      print(greet("Alice"))              # Hello, Alice!
+      print(greet("Bob", "Good morning")) # Good morning, Bob!
+
+      # Calling with keyword arguments (order can vary)
+      print(greet(greeting="Hi", name="Carol"))  # Hi, Carol!
+
+      # Functions can call other functions
+      def greet_list(names):
+          """Greet everyone in a list."""
+          results = []
+          for name in names:
+              results.append(greet(name))
+          return results
+
+      print(greet_list(["Dana", "Eve"]))
+      # ['Hello, Dana!', 'Hello, Eve!']
+    explanation: >
+      Default parameters let callers omit arguments when the default is appropriate.
+      Keyword arguments at the call site make code self-documenting and order-independent.
+
+  - title: "*args and **kwargs"
+    code: |
+      # *args collects extra positional arguments as a tuple
+      def total(*args):
+          """Sum any number of values."""
+          return sum(args)
+
+      print(total(1, 2, 3))          # 6
+      print(total(10, 20, 30, 40))   # 100
+
+      # **kwargs collects extra keyword arguments as a dict
+      def describe(**kwargs):
+          """Print key-value pairs about anything."""
+          for key, value in kwargs.items():
+              print(f"  {key}: {value}")
+
+      describe(name="Alice", age=30, city="Paris")
+      # name: Alice
+      # age: 30
+      # city: Paris
+
+      # Combining: standard param + *args + **kwargs
+      def log(level, *messages, timestamp=False):
+          prefix = "[LOG]" if not timestamp else "[TIME LOG]"
+          for msg in messages:
+              print(f"{prefix} [{level}] {msg}")
+
+      log("INFO", "Server started", "Listening on port 8080")
+    explanation: >
+      *args lets you write functions like sum() that accept any number of values.
+      **kwargs is great for building flexible APIs where the set of options isn't fixed.
+
+  - title: "Multiple Return Values and Docstrings"
+    code: |
+      def stats(numbers):
+          """
+          Calculate basic statistics for a list of numbers.
+
+          Args:
+              numbers (list): A non-empty list of numeric values.
+
+          Returns:
+              tuple: (minimum, maximum, average) as floats.
+          """
+          if not numbers:
+              raise ValueError("List must not be empty")
+          minimum = min(numbers)
+          maximum = max(numbers)
+          average = sum(numbers) / len(numbers)
+          return minimum, maximum, average   # returns a tuple
+
+      data = [4, 8, 15, 16, 23, 42]
+      lo, hi, avg = stats(data)              # unpack the tuple
+      print(f"Min: {lo}, Max: {hi}, Avg: {avg:.1f}")
+      # Min: 4, Max: 42, Avg: 18.0
+
+      # Access docstring
+      print(stats.__doc__)
+    explanation: >
+      Returning multiple values as a tuple and unpacking on the caller side is idiomatic
+      Python. Always write a docstring — it shows up in help() and IDE tooltips.
+
+common_mistakes:
+  - "Forgetting 'return' — the function returns None and silent bugs appear"
+  - "Using a mutable default argument like def f(lst=[]): — the default list is shared across all calls"
+  - "Confusing parameters (in the def) with arguments (at the call site)"
+  - "Calling a function without parentheses: 'print' instead of 'print()' — just references the function object"
+  - "Modifying a mutable argument inside the function and expecting the caller's copy to be unchanged"
+  - "Putting required parameters after default parameters: def f(a=1, b) is a SyntaxError"
+
+related_concepts:
+  - conditionals
+  - loops
+  - scope
+  - error-basics
+
+problem_ids:
+  - sum-list-fn
+  - is-palindrome
+  - flatten-list
+
+glossary_terms:
+  - term: Function
+    definition: >
+      A named, reusable block of code defined with `def`. Accepts input via parameters,
+      performs work, and optionally returns a value with `return`.
+  - term: Parameter
+    definition: >
+      A variable name in the function definition that acts as a placeholder for the
+      value passed when the function is called.
+  - term: Argument
+    definition: >
+      The actual value supplied to a function when it is called. Arguments are assigned
+      to parameters.
+  - term: Return Value
+    definition: >
+      The value produced by a function and sent back to the caller with the `return`
+      statement. A function without return (or with bare return) returns None.
+  - term: Docstring
+    definition: >
+      A string literal as the first statement of a function (or module/class) that
+      documents its purpose, parameters, and return value. Accessible via __doc__.
+  - term: "*args / **kwargs"
+    definition: >
+      *args collects extra positional arguments into a tuple; **kwargs collects extra
+      keyword arguments into a dict. Both are used to write flexible, variadic functions.

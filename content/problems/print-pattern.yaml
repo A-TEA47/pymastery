@@ -1,0 +1,61 @@
+id: print-pattern
+concept_ids:
+  - setting-up-python
+level: beginner
+tier: challenge
+difficulty: 5
+title: Right Triangle of Stars
+prompt: |
+  Write a function print_triangle(n) that returns a string representing a
+  right-aligned triangle of asterisks with n rows.
+
+  Row 1 has 1 star, row 2 has 2 stars, and so on up to row n.
+  Rows are joined by newline characters ('\n'). There must be NO trailing newline.
+
+  Example:
+    print_triangle(1) => "*"
+    print_triangle(3) => "*\n**\n***"
+
+  When printed, print_triangle(3) looks like:
+    *
+    **
+    ***
+
+  Constraints:
+    - n >= 1
+    - Return a string (do not print anything)
+time_limit_minutes: 10
+starter_code: |
+  def print_triangle(n):
+      # your code here
+      pass
+solution_code: |
+  def print_triangle(n):
+      rows = []
+      for i in range(1, n + 1):
+          rows.append("*" * i)
+      return "\n".join(rows)
+function_name: print_triangle
+test_cases:
+  - input: [1]
+    expected: "*"
+  - input: [3]
+    expected: "*\n**\n***"
+  - input: [5]
+    expected: "*\n**\n***\n****\n*****"
+  - input: [2]
+    expected: "*\n**"
+hidden_test_cases:
+  - input: [4]
+    expected: "*\n**\n***\n****"
+  - input: [6]
+    expected: "*\n**\n***\n****\n*****\n******"
+hints:
+  - "Build a list of strings, where each string is '*' repeated i times (using '*' * i)."
+  - "Use range(1, n + 1) so you iterate from 1 to n inclusive."
+  - "Join all the row strings with '\\n'.join(rows) to avoid a trailing newline."
+tags:
+  - strings
+  - loops
+  - patterns
+  - beginner

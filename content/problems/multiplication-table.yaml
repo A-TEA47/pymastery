@@ -1,0 +1,47 @@
+id: multiplication-table
+concept_ids:
+  - loops
+level: beginner
+tier: warmup
+difficulty: 2
+title: Multiplication Table Row
+prompt: |
+  Write a function times_table(n) that returns a list of the multiplication
+  table for n: specifically, the products n*1, n*2, ..., n*10, in order.
+
+  The result should be a list of 10 integers.
+
+  Examples:
+    times_table(3)  -> [3, 6, 9, 12, 15, 18, 21, 24, 27, 30]
+    times_table(1)  -> [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    times_table(10) -> [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+starter_code: |
+  def times_table(n):
+      # your code here
+      pass
+solution_code: |
+  def times_table(n):
+      return [n * i for i in range(1, 11)]
+function_name: times_table
+test_cases:
+  - input: [3]
+    expected: [3, 6, 9, 12, 15, 18, 21, 24, 27, 30]
+  - input: [1]
+    expected: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+  - input: [10]
+    expected: [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+  - input: [5]
+    expected: [5, 10, 15, 20, 25, 30, 35, 40, 45, 50]
+hidden_test_cases:
+  - input: [7]
+    expected: [7, 14, 21, 28, 35, 42, 49, 56, 63, 70]
+  - input: [0]
+    expected: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+hints:
+  - "Use range(1, 11) to get the multipliers 1 through 10."
+  - "A list comprehension is perfect here: [n * i for i in range(1, 11)]."
+  - "Alternatively, use a for loop: append n*i to a results list inside the loop."
+tags:
+  - loops
+  - list-comprehension
+  - multiplication

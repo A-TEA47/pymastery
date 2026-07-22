@@ -1,0 +1,183 @@
+id: strings
+level: beginner
+module: fundamentals
+title: "Strings: Indexing, Slicing & Methods"
+prerequisites:
+  - variables-and-types
+estimated_minutes: 35
+
+plain_explanation: |
+  A string is just a sequence of characters — letters, digits, spaces, punctuation —
+  stored one after another. Think of it like a train: each carriage has a seat number
+  (index), and you can grab one carriage (indexing) or a range of carriages (slicing).
+  The first seat is number 0, not 1 — Python always counts from zero.
+
+  Slicing lets you cut out a portion of a string using the colon syntax: text[start:end].
+  The start is included, the end is not — so text[1:4] gives you characters at positions
+  1, 2, and 3. You can also count backwards from the end using negative numbers: text[-1]
+  is always the last character.
+
+  f-strings (formatted string literals) are the modern way to embed variables inside
+  strings. Instead of gluing pieces together with +, you write f"Hello, {name}!" and
+  Python fills in the value for you. They also support formatting like rounding decimals
+  and padding numbers.
+
+  Strings come with dozens of built-in methods. Think of them like verbs you can apply to
+  a string: .upper() shouts it, .strip() trims its edges, .split() chops it into a list,
+  .join() glues a list back into a string, and .replace() swaps out parts of it.
+
+technical_explanation: |
+  Strings in Python are **immutable sequences** of Unicode code points. They support the
+  full sequence protocol.
+
+  **Indexing:**
+  ```
+  s = "Python"
+  s[0]   -> 'P'    (first character)
+  s[-1]  -> 'n'    (last character)
+  s[-2]  -> 'o'    (second to last)
+  ```
+
+  **Slicing:** `s[start:stop:step]`
+  - `start` defaults to 0, `stop` defaults to len(s), `step` defaults to 1
+  - `s[::-1]` reverses the string
+  - Out-of-range indices in slices are silently clamped
+
+  **f-strings (PEP 498):** `f"text {expression!conversion:format_spec}"`
+  - `!r` applies repr(), `!s` applies str()
+  - Format spec: `:.2f` for 2 decimal places, `:>10` for right-align in 10 chars
+
+  **Key string methods:**
+  | Method | Description | Example |
+  |---|---|---|
+  | `.upper()` / `.lower()` | Change case | `"Hi".lower()` → `"hi"` |
+  | `.strip()` / `.lstrip()` / `.rstrip()` | Remove whitespace | `" hi ".strip()` → `"hi"` |
+  | `.split(sep)` | Split into list | `"a,b".split(",")` → `["a","b"]` |
+  | `sep.join(iterable)` | Join list into string | `",".join(["a","b"])` → `"a,b"` |
+  | `.replace(old, new)` | Replace substring | `"ab".replace("a","x")` → `"xb"` |
+  | `.find(sub)` | First index of sub (-1 if absent) | `"abc".find("b")` → `1` |
+  | `.count(sub)` | Count occurrences | `"abab".count("ab")` → `2` |
+  | `.startswith(s)` / `.endswith(s)` | Boolean prefix/suffix check | |
+  | `.isdigit()` / `.isalpha()` | Character class check | |
+
+  Strings are immutable — every "modification" method returns a **new** string.
+
+examples:
+  - title: "Indexing and Slicing"
+    code: |
+      word = "PyMastery"
+
+      # Indexing
+      print(word[0])    # 'P'   (first)
+      print(word[-1])   # 'y'   (last)
+      print(word[2])    # 'M'
+
+      # Slicing [start:stop:step]
+      print(word[0:2])   # 'Py'    (chars 0 and 1)
+      print(word[2:])    # 'Mastery'  (from index 2 to end)
+      print(word[:2])    # 'Py'    (from start up to index 2)
+      print(word[::-1])  # 'yretsamyP'  (reversed)
+      print(word[::2])   # 'PMsey'  (every other character)
+    explanation: >
+      Indexing grabs a single character; slicing returns a substring. The step parameter
+      in [start:stop:step] lets you skip characters or reverse the string.
+
+  - title: "f-strings for Formatting"
+    code: |
+      name = "Alice"
+      score = 92.678
+      rank = 3
+
+      # Basic f-string
+      print(f"Hello, {name}!")                    # Hello, Alice!
+
+      # Formatting numbers
+      print(f"Score: {score:.1f}")                # Score: 92.7
+      print(f"Score: {score:.2f}%")              # Score: 92.68%
+
+      # Alignment and padding
+      print(f"Rank: {rank:>5}")                   # Rank:     3
+      print(f"Name: {name:<10}|")                 # Name: Alice     |
+
+      # Expressions inside f-strings
+      a, b = 4, 7
+      print(f"{a} + {b} = {a + b}")              # 4 + 7 = 11
+      print(f"{'hello'.upper()}")                 # HELLO
+    explanation: >
+      f-strings are the cleanest way to embed values and expressions in strings. The
+      format spec after the colon controls precision, alignment, and width.
+
+  - title: "Common String Methods"
+    code: |
+      sentence = "  Hello, World!  "
+
+      # Cleaning
+      cleaned = sentence.strip()         # "Hello, World!"
+      print(cleaned)
+
+      # Case conversion
+      print(cleaned.upper())             # "HELLO, WORLD!"
+      print(cleaned.lower())             # "hello, world!"
+
+      # Searching
+      print(cleaned.find("World"))       # 7
+      print(cleaned.count("l"))          # 3
+
+      # Modifying (returns new string)
+      print(cleaned.replace("World", "Python"))  # "Hello, Python!"
+
+      # Split and join
+      words = cleaned.split(", ")        # ["Hello", "World!"]
+      print(words)
+      joined = " | ".join(words)         # "Hello | World!"
+      print(joined)
+
+      # Check content
+      print("abc123".isalpha())          # False
+      print("abc".isalpha())             # True
+      print("  ".isspace())             # True
+    explanation: >
+      Remember: strings are immutable, so methods like replace() and upper() return new
+      strings — they do not change the original. Always capture or print the result.
+
+common_mistakes:
+  - "Forgetting that string indexing starts at 0, not 1"
+  - "Expecting s[1:4] to include index 4 — the stop is exclusive"
+  - "Trying to modify a string in place (e.g., s[0] = 'X') — strings are immutable"
+  - "Forgetting the f prefix on f-strings: 'Hello {name}' prints literally"
+  - "Using + to concatenate inside loops — this is O(n²); use ''.join() instead"
+  - "Calling .split() without arguments splits on any whitespace AND removes empty strings"
+  - "Mixing up .find() (returns -1) and .index() (raises ValueError) when substring is missing"
+
+related_concepts:
+  - variables-and-types
+  - type-conversion-operators
+  - lists
+  - input-output
+
+problem_ids:
+  - reverse-string
+  - count-vowels
+  - title-case-name
+
+glossary_terms:
+  - term: Immutable
+    definition: >
+      An object whose value cannot be changed after creation. Strings are immutable in
+      Python — any operation that appears to modify a string actually creates a new one.
+  - term: Index
+    definition: >
+      An integer position used to access a single element in a sequence. Python uses
+      zero-based indexing (first element is at index 0). Negative indices count from the end.
+  - term: Slice
+    definition: >
+      A way to extract a sub-sequence using the syntax [start:stop:step]. The start is
+      inclusive and the stop is exclusive.
+  - term: f-string
+    definition: >
+      A formatted string literal (prefix f"...") that allows embedding Python expressions
+      directly inside string braces {}. Introduced in Python 3.6.
+  - term: String Method
+    definition: >
+      A function attached to a string object (called with dot notation) that performs an
+      operation on the string and returns a result, since strings are immutable.

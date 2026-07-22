@@ -1,0 +1,63 @@
+id: is-palindrome
+concept_ids:
+  - functions
+level: beginner
+tier: applied
+difficulty: 5
+title: Is It a Palindrome?
+prompt: |
+  Write a function is_palindrome(s) that returns True if the string s reads
+  the same forwards and backwards, and False otherwise.
+
+  Rules:
+    - Ignore case (treat uppercase and lowercase as the same).
+    - Ignore any non-alphanumeric characters (spaces, punctuation, etc.).
+
+  Examples:
+    is_palindrome("racecar")         -> True
+    is_palindrome("A man a plan a canal Panama")  -> True
+    is_palindrome("hello")           -> False
+    is_palindrome("Was it a car or a cat I saw?") -> True
+
+  Function signature:
+    def is_palindrome(s):
+starter_code: |
+  def is_palindrome(s):
+      # your code here
+      pass
+solution_code: |
+  def is_palindrome(s):
+      cleaned = [ch.lower() for ch in s if ch.isalnum()]
+      return cleaned == cleaned[::-1]
+function_name: is_palindrome
+test_cases:
+  - input: ["racecar"]
+    expected: true
+  - input: ["hello"]
+    expected: false
+  - input: ["A man a plan a canal Panama"]
+    expected: true
+  - input: ["Was it a car or a cat I saw?"]
+    expected: true
+  - input: ["Not a palindrome"]
+    expected: false
+hidden_test_cases:
+  - input: [""]
+    expected: true
+  - input: ["No 'x' in Nixon"]
+    expected: true
+  - input: ["abcba"]
+    expected: true
+hints:
+  - "Filter the string to keep only alphanumeric characters, then lowercase."
+  - "Compare the cleaned list to its reverse using slicing: cleaned[::-1]"
+  - "Use str.isalnum() to check if a character is a letter or digit."
+external_reference:
+  source: leetcode
+  title: "Similar: Valid Palindrome"
+  url: "https://leetcode.com/problems/valid-palindrome/"
+tags:
+  - functions
+  - strings
+  - two-pointers
+  - beginner

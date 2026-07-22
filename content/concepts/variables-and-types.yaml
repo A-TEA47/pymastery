@@ -1,0 +1,70 @@
+id: "variables-and-types"
+level: "beginner"
+module: "fundamentals"
+title: "Variables & Data Types"
+prerequisites: ["setting-up-python"]
+estimated_minutes: 20
+plain_explanation: |
+  Imagine a variable as a labeled box. You put something in the box and give it a name, then you can use that name anywhere to get what's inside the box. That's all a variable is — a named storage spot for a value.
+
+  Python has a few basic types of values. A whole number like 5 or -12 is called an integer (int). A decimal number like 3.14 is a float. Text like "hello" is a string (str). True or False is a boolean (bool). And when there's nothing at all, it's None.
+
+  Unlike many languages, Python figures out the type automatically. You don't have to say "this is an int" — Python sees the 5 and knows it's an integer.
+technical_explanation: |
+  In Python, variables are references to objects in memory, not typed containers. When you write x = 5, you're creating an integer object with value 5 and binding the name "x" to it. The name is just a pointer.
+
+  Python's built-in types include: int (arbitrary precision integers), float (IEEE 754 double-precision), str (immutable Unicode sequences), bool (subclass of int — True==1, False==0), NoneType (singleton None), complex, bytes, and more.
+
+  Use type() to inspect the type of any object. Python is dynamically typed — a name can be rebound to an object of a different type at any time. It's also strongly typed — Python won't silently coerce types (unlike JavaScript).
+examples:
+  - title: "Creating variables"
+    code: |
+      name = "Alice"
+      age = 25
+      height = 5.7
+      is_student = True
+      nothing = None
+
+      print(name, age, height, is_student, nothing)
+    explanation: "Each line creates a variable and assigns a value. Python infers the type."
+  - title: "Checking types"
+    code: |
+      x = 42
+      y = 3.14
+      z = "hello"
+      flag = False
+
+      print(type(x))   # <class 'int'>
+      print(type(y))   # <class 'float'>
+      print(type(z))   # <class 'str'>
+      print(type(flag)) # <class 'bool'>
+    explanation: "type() tells you exactly what type a value is."
+  - title: "Variables can be reassigned"
+    code: |
+      score = 10
+      print("Score:", score)
+
+      score = score + 5
+      print("New score:", score)
+
+      score = "Game Over"  # can even change type!
+      print(score)
+    explanation: "Variables can be updated. In Python, you can even reassign to a different type."
+common_mistakes:
+  - "Using a variable before assigning it — this gives a NameError."
+  - "Confusing = (assignment) with == (equality check)."
+  - "Assuming True and False need quotes — they are keywords, not strings."
+  - "Mixing up None (nothing) with 0 or empty string — they are different values."
+related_concepts: ["type-conversion-operators", "strings", "conditionals"]
+problem_ids: ["var-swap", "bmi-calculator", "type-detective"]
+glossary_terms:
+  - term: "variable"
+    definition: "A named reference to a value stored in memory."
+  - term: "integer (int)"
+    definition: "A whole number with no decimal point, e.g. 5, -3, 1000."
+  - term: "float"
+    definition: "A number with a decimal point, stored as a floating-point value, e.g. 3.14."
+  - term: "boolean (bool)"
+    definition: "A value that is either True or False. Used in conditions."
+  - term: "None"
+    definition: "Python's way of representing the absence of a value."

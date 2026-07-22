@@ -1,0 +1,56 @@
+id: bmi-calculator
+concept_ids:
+  - variables-and-types
+level: beginner
+tier: applied
+difficulty: 3
+title: BMI Calculator
+prompt: |
+  Write a function bmi(weight_kg, height_m) that calculates and returns
+  the Body Mass Index (BMI) for a person.
+
+  Formula: BMI = weight_kg / (height_m ** 2)
+
+  Return the result rounded to 1 decimal place.
+
+  Example:
+    bmi(70, 1.75)  => 22.9
+    bmi(90, 1.80)  => 27.8
+    bmi(50, 1.60)  => 19.5
+
+  Constraints:
+    - weight_kg and height_m are positive numbers
+    - Round to exactly 1 decimal place
+starter_code: |
+  def bmi(weight_kg, height_m):
+      # your code here
+      pass
+solution_code: |
+  def bmi(weight_kg, height_m):
+      result = weight_kg / (height_m ** 2)
+      return round(result, 1)
+function_name: bmi
+test_cases:
+  - input: [70, 1.75]
+    expected: 22.9
+  - input: [90, 1.80]
+    expected: 27.8
+  - input: [50, 1.60]
+    expected: 19.5
+  - input: [60, 1.70]
+    expected: 20.8
+hidden_test_cases:
+  - input: [100, 1.90]
+    expected: 27.7
+  - input: [55, 1.65]
+    expected: 20.2
+hints:
+  - "BMI = weight_kg divided by the square of height_m. In Python: weight_kg / (height_m ** 2)."
+  - "Use the built-in round(value, 1) to round to 1 decimal place."
+  - "Make sure you square height_m, not weight_kg — a common mix-up!"
+tags:
+  - arithmetic
+  - floats
+  - rounding
+  - variables
+  - beginner

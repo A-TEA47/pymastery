@@ -1,0 +1,68 @@
+id: make-adder
+concept_ids:
+  - scope
+level: beginner
+tier: challenge
+difficulty: 6
+title: Make a Multiplier (Closure Factory)
+prompt: |
+  Write a function make_multiplier(factor) that returns a new function.
+  The returned function takes a single number x and returns x * factor.
+  This is a closure — the inner function "remembers" the value of factor
+  from the enclosing scope.
+
+  Example:
+    triple = make_multiplier(3)
+    triple(5)   -> 15
+    triple(10)  -> 30
+
+    double = make_multiplier(2)
+    double(7)   -> 14
+
+  For testing purposes, also define:
+    def test_multiplier(factor, x):
+        return make_multiplier(factor)(x)
+
+  Function signature:
+    def make_multiplier(factor):
+    def test_multiplier(factor, x):
+starter_code: |
+  def make_multiplier(factor):
+      # Return a function that multiplies its argument by factor
+      pass
+
+  def test_multiplier(factor, x):
+      return make_multiplier(factor)(x)
+solution_code: |
+  def make_multiplier(factor):
+      def multiply(x):
+          return x * factor
+      return multiply
+
+  def test_multiplier(factor, x):
+      return make_multiplier(factor)(x)
+function_name: test_multiplier
+test_cases:
+  - input: [3, 5]
+    expected: 15
+  - input: [2, 10]
+    expected: 20
+  - input: [1, 99]
+    expected: 99
+  - input: [0, 42]
+    expected: 0
+hidden_test_cases:
+  - input: [7, 6]
+    expected: 42
+  - input: [5, 0]
+    expected: 0
+hints:
+  - "Define an inner function inside make_multiplier that uses factor from the outer scope."
+  - "Return the inner function object itself (not the result of calling it)."
+  - "This is the classic closure pattern: outer function defines a variable, inner function uses it."
+tags:
+  - scope
+  - closures
+  - functions
+  - higher-order-functions
+  - beginner

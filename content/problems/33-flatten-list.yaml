@@ -1,0 +1,61 @@
+id: flatten-list
+concept_ids:
+  - functions
+level: beginner
+tier: challenge
+difficulty: 6
+title: Flatten a Nested List (One Level)
+prompt: |
+  Write a function flatten(nested) that takes a list which may contain integers
+  or other lists (exactly one level deep) and returns a flat list of all integers.
+
+  The input will never have lists nested more than one level deep.
+
+  Examples:
+    flatten([1, [2, 3], 4, [5]])     -> [1, 2, 3, 4, 5]
+    flatten([[1, 2], [3, 4]])        -> [1, 2, 3, 4]
+    flatten([1, 2, 3])               -> [1, 2, 3]
+    flatten([])                      -> []
+    flatten([[]])                    -> []
+
+  Function signature:
+    def flatten(nested):
+starter_code: |
+  def flatten(nested):
+      # your code here
+      pass
+solution_code: |
+  def flatten(nested):
+      result = []
+      for item in nested:
+          if isinstance(item, list):
+              result.extend(item)
+          else:
+              result.append(item)
+      return result
+function_name: flatten
+test_cases:
+  - input: [[1, [2, 3], 4, [5]]]
+    expected: [1, 2, 3, 4, 5]
+  - input: [[[1, 2], [3, 4]]]
+    expected: [1, 2, 3, 4]
+  - input: [[1, 2, 3]]
+    expected: [1, 2, 3]
+  - input: [[]]
+    expected: []
+  - input: [[[]]]
+    expected: []
+hidden_test_cases:
+  - input: [[10, [20, 30], [40], 50]]
+    expected: [10, 20, 30, 40, 50]
+  - input: [[[1], [2], [3]]]
+    expected: [1, 2, 3]
+hints:
+  - "Loop through each item in the list. If it's a list itself, extend the result; otherwise, append it."
+  - "Use isinstance(item, list) to check if something is a list."
+  - "list.extend() adds all elements of an iterable to the list."
+tags:
+  - functions
+  - lists
+  - iteration
+  - beginner

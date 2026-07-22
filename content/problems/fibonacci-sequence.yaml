@@ -1,0 +1,69 @@
+id: fibonacci-sequence
+concept_ids:
+  - loops
+level: beginner
+tier: applied
+difficulty: 4
+title: Fibonacci Sequence Generator
+prompt: |
+  Write a function fibonacci(n) that returns the first n numbers of the
+  Fibonacci sequence as a list.
+
+  The Fibonacci sequence starts: 0, 1, 1, 2, 3, 5, 8, 13, 21, ...
+  Each number is the sum of the two before it.
+
+  Rules:
+    - If n <= 0, return an empty list [].
+    - If n == 1, return [0].
+    - If n == 2, return [0, 1].
+    - For n > 2, continue building the sequence up to n elements.
+
+  Examples:
+    fibonacci(0)  -> []
+    fibonacci(1)  -> [0]
+    fibonacci(5)  -> [0, 1, 1, 2, 3]
+    fibonacci(8)  -> [0, 1, 1, 2, 3, 5, 8, 13]
+starter_code: |
+  def fibonacci(n):
+      # your code here
+      pass
+solution_code: |
+  def fibonacci(n):
+      if n <= 0:
+          return []
+      if n == 1:
+          return [0]
+      sequence = [0, 1]
+      while len(sequence) < n:
+          sequence.append(sequence[-1] + sequence[-2])
+      return sequence
+function_name: fibonacci
+test_cases:
+  - input: [0]
+    expected: []
+  - input: [1]
+    expected: [0]
+  - input: [2]
+    expected: [0, 1]
+  - input: [5]
+    expected: [0, 1, 1, 2, 3]
+  - input: [8]
+    expected: [0, 1, 1, 2, 3, 5, 8, 13]
+hidden_test_cases:
+  - input: [10]
+    expected: [0, 1, 1, 2, 3, 5, 8, 13, 21, 34]
+  - input: [-3]
+    expected: []
+hints:
+  - "Handle the edge cases (n <= 0, n == 1) first before the general loop."
+  - "Start with a list containing [0, 1] and keep appending the sum of the last two elements."
+  - "The last two elements of a list are list[-1] and list[-2]."
+  - "Use a while loop: while len(sequence) < n: sequence.append(...)."
+external_reference:
+  source: leetcode
+  title: "Related: Fibonacci Number"
+  url: "https://leetcode.com/problems/fibonacci-number/"
+tags:
+  - loops
+  - sequences
+  - fibonacci

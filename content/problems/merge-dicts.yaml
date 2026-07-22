@@ -1,0 +1,64 @@
+id: merge-dicts
+concept_ids:
+  - dictionaries
+level: beginner
+tier: applied
+difficulty: 5
+title: Merge and Sum Dictionaries
+prompt: |
+  Write a function merge_and_sum(d1, d2) that merges two dictionaries into one.
+
+  Rules:
+    - If a key appears in only one dictionary, include it with its original value.
+    - If a key appears in BOTH dictionaries, the result should map that key to
+      the SUM of the two values.
+    - The original dictionaries must not be modified.
+    - Keys and values are strings and integers respectively.
+
+  Examples:
+    merge_and_sum({"a": 1, "b": 2}, {"b": 3, "c": 4})
+      -> {"a": 1, "b": 5, "c": 4}
+
+    merge_and_sum({"x": 10}, {"x": 5, "y": 7})
+      -> {"x": 15, "y": 7}
+
+    merge_and_sum({}, {"a": 1})
+      -> {"a": 1}
+starter_code: |
+  def merge_and_sum(d1, d2):
+      # your code here
+      pass
+solution_code: |
+  def merge_and_sum(d1, d2):
+      result = dict(d1)
+      for key, value in d2.items():
+          if key in result:
+              result[key] += value
+          else:
+              result[key] = value
+      return result
+function_name: merge_and_sum
+test_cases:
+  - input: [{"a": 1, "b": 2}, {"b": 3, "c": 4}]
+    expected: {"a": 1, "b": 5, "c": 4}
+  - input: [{"x": 10}, {"x": 5, "y": 7}]
+    expected: {"x": 15, "y": 7}
+  - input: [{}, {"a": 1}]
+    expected: {"a": 1}
+  - input: [{"a": 1}, {}]
+    expected: {"a": 1}
+  - input: [{"p": 3, "q": 4}, {"p": 3, "q": 4}]
+    expected: {"p": 6, "q": 8}
+hidden_test_cases:
+  - input: [{"cat": 2, "dog": 1}, {"dog": 4, "fish": 5}]
+    expected: {"cat": 2, "dog": 5, "fish": 5}
+  - input: [{"z": 100}, {"z": -50}]
+    expected: {"z": 50}
+hints:
+  - "Start by copying d1 into a new dictionary: result = dict(d1). This avoids mutating the original."
+  - "Then loop through d2.items(). If the key is already in result, add the value; otherwise assign it."
+  - "Using dict(d1) creates a shallow copy — good enough since values are integers."
+tags:
+  - dictionaries
+  - merging
+  - accumulation

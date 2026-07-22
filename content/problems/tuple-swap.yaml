@@ -1,0 +1,50 @@
+id: tuple-swap
+concept_ids:
+  - tuples
+level: beginner
+tier: warmup
+difficulty: 2
+title: Rotate a Tuple Left
+prompt: |
+  Write a function rotate_tuple(t) that takes a tuple of exactly 3 elements
+  and returns a new tuple with the elements rotated left.
+
+  Rotating left means the first element moves to the end:
+    (a, b, c) -> (b, c, a)
+
+  You may assume the input always has exactly 3 elements.
+
+  Examples:
+    rotate_tuple((1, 2, 3))       -> (2, 3, 1)
+    rotate_tuple(('x', 'y', 'z')) -> ('y', 'z', 'x')
+    rotate_tuple((10, 20, 30))    -> (20, 30, 10)
+starter_code: |
+  def rotate_tuple(t):
+      # your code here
+      pass
+solution_code: |
+  def rotate_tuple(t):
+      return (t[1], t[2], t[0])
+function_name: rotate_tuple
+test_cases:
+  - input: [[1, 2, 3]]
+    expected: [2, 3, 1]
+  - input: [["x", "y", "z"]]
+    expected: ["y", "z", "x"]
+  - input: [[10, 20, 30]]
+    expected: [20, 30, 10]
+  - input: [[true, false, true]]
+    expected: [false, true, true]
+hidden_test_cases:
+  - input: [[100, 200, 300]]
+    expected: [200, 300, 100]
+  - input: [["a", "b", "c"]]
+    expected: ["b", "c", "a"]
+hints:
+  - "Tuples support index access just like lists — try t[0], t[1], t[2]."
+  - "You can build a new tuple with parentheses: (t[1], t[2], t[0])."
+  - "Remember: tuples are immutable, so you must return a brand-new tuple."
+tags:
+  - tuples
+  - indexing
+  - rotation

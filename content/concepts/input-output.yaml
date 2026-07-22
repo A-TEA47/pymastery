@@ -1,0 +1,187 @@
+id: input-output
+level: beginner
+module: getting-started
+title: "Input & Output: Talking to the User"
+prerequisites:
+  - variables-and-types
+  - strings
+estimated_minutes: 20
+
+plain_explanation: |
+  Programs become truly useful when they can interact with people. `input()` is Python's
+  way of pausing and asking the user to type something. When the user presses Enter,
+  their response comes back as a string that your program can work with. Think of it
+  like a form that you hand someone — they fill it in and give it back.
+
+  Because input() ALWAYS returns a string, you must convert it if you need a number.
+  Wrapping it like `int(input("Age: "))` does both steps at once: ask the question, get
+  the text, convert it. If the user types something that can't be converted, Python will
+  raise an error — we'll handle that gracefully in the error-handling concept.
+
+  **Important note for this platform:** PyMastery runs Python in your browser using
+  Pyodide. In a browser environment, `input()` cannot pause the page and wait for you
+  to type. Instead, the platform simulates input by pre-loading values. In code
+  challenges, any call to `input()` returns a pre-configured value. You write your
+  function to process those values, not to call input() yourself — so problems on this
+  platform always give you data as function parameters, not through input(). The
+  concepts shown here apply when you run Python on your own computer.
+
+  Printing output with `print()` is equally flexible. You can print multiple values
+  separated by a custom separator, control the ending character (default is a newline),
+  and use f-strings to build rich, formatted output lines.
+
+technical_explanation: |
+  **input(prompt):**
+  - Displays prompt to stdout (optional string argument)
+  - Pauses execution and reads a line from stdin
+  - Returns the input as a `str`, stripping the trailing newline
+  - Always returns `str` regardless of what the user typed
+
+  **Type conversion of input:**
+  ```python
+  name  = input("Name: ")          # str
+  age   = int(input("Age: "))       # int  (ValueError if not numeric)
+  price = float(input("Price: "))   # float
+  ```
+
+  **Multiple inputs on one line:**
+  ```python
+  a, b = input("Two numbers: ").split()
+  a, b = int(a), int(b)
+  # Or using map:
+  a, b = map(int, input("Two numbers: ").split())
+  ```
+
+  **print() signature:** `print(*objects, sep=' ', end='\n', file=sys.stdout, flush=False)`
+  - `sep` — separator between multiple objects (default: single space)
+  - `end` — printed after all objects (default: newline)
+
+  **Pyodide / Browser simulation:**
+  In browser-based Python (Pyodide), the standard `input()` function is replaced with a
+  synchronous mock. PyMastery pre-loads test inputs before running your code. For coding
+  challenges, you write pure functions that accept parameters — no `input()` needed.
+
+  **f-string formatting (recap):**
+  ```python
+  f"{value:.2f}"     # 2 decimal places
+  f"{value:>10}"     # right-align in 10 chars
+  f"{value:0>5}"     # zero-pad to width 5
+  ```
+
+examples:
+  - title: "Basic input() and Type Conversion"
+    code: |
+      # --- Run this on your local Python, not in the browser ---
+
+      # Get a name (stays as string)
+      name = input("Enter your name: ")
+      print(f"Hello, {name}!")
+
+      # Get a number — must convert explicitly
+      age = int(input("Enter your age: "))
+      next_birthday = age + 1
+      print(f"Next year you'll be {next_birthday}.")
+
+      # Get a float
+      price = float(input("Item price: $"))
+      total = price * 1.1   # add 10% tax
+      print(f"Total with tax: ${total:.2f}")
+    explanation: >
+      input() always returns a string — forgetting to convert it is the most common
+      beginner mistake. Wrap int() or float() around input() for immediate conversion.
+
+  - title: "Multiple Inputs and Formatted Output"
+    code: |
+      # --- Run this on your local Python ---
+
+      # Read two numbers from a single line
+      raw = input("Enter two numbers separated by space: ")
+      parts = raw.split()           # ["12", "34"]
+      a, b = int(parts[0]), int(parts[1])
+      print(f"Sum: {a + b}, Product: {a * b}")
+
+      # Cleaner with map()
+      x, y = map(int, input("Two integers: ").split())
+      print(f"Average: {(x + y) / 2:.1f}")
+
+      # print() with custom sep and end
+      print("Loading", end="")
+      for _ in range(3):
+          print(".", end="", flush=True)
+      print(" done!")           # Loading... done!
+
+      # Print a table
+      headers = ["Name", "Score", "Grade"]
+      print(f"{'Name':<12} {'Score':>6} {'Grade':>6}")
+      print("-" * 26)
+      print(f"{'Alice':<12} {92:>6} {'A':>6}")
+      print(f"{'Bob':<12} {78:>6} {'C':>6}")
+    explanation: >
+      map(int, ...) is the slickest way to read several integers at once. Custom sep
+      and end arguments to print() give you full control over output formatting.
+
+  - title: "How PyMastery Simulates Input (Browser Context)"
+    code: |
+      # In PyMastery challenges, you write FUNCTIONS, not scripts.
+      # The platform passes arguments — no input() needed.
+
+      # ✅ What you write for a challenge:
+      def greeting_generator(name, age):
+          """Return a personalised greeting string."""
+          return f"Hello, {name}! You are {age} years old."
+
+      # ✅ The platform calls it like this:
+      result = greeting_generator("Alice", 30)
+      print(result)   # Hello, Alice! You are 30 years old.
+
+      # ❌ What NOT to do in a PyMastery challenge:
+      # name = input("Name: ")   <-- this won't work as expected in the browser
+      # age = int(input("Age: "))
+
+      # When running locally (e.g., in IDLE or VS Code), input() works perfectly:
+      # name = input("Enter name: ")
+      # print(greeting_generator(name, int(input("Age: "))))
+    explanation: >
+      PyMastery challenges always define a function you must implement. On your own
+      machine, you can wrap that function with input() calls to make it interactive.
+      Keep the two contexts separate in your mind.
+
+common_mistakes:
+  - "Forgetting to convert input() — it always returns str, so int('5') + 1 works but '5' + 1 raises TypeError"
+  - "Calling int(input()) when the user might type a float like '3.5' — use float() first"
+  - "Expecting input() to work in browser-based Python without a simulation layer"
+  - "Assuming print() adds a space between arguments — it does by default, but this can be changed with sep=''"
+  - "Reading multiple values with separate input() calls instead of using .split() on one line"
+
+related_concepts:
+  - variables-and-types
+  - strings
+  - type-conversion-operators
+  - error-basics
+
+problem_ids:
+  - greeting-generator
+  - simple-calculator
+  - name-initials
+
+glossary_terms:
+  - term: input()
+    definition: >
+      A built-in function that displays an optional prompt and reads a line of text from
+      the user (stdin). Always returns the result as a string.
+  - term: print()
+    definition: >
+      A built-in function that writes objects to stdout. Supports sep (separator),
+      end (line ending), and file (output stream) parameters.
+  - term: stdin / stdout
+    definition: >
+      Standard input (stdin) is where programs read user input (usually the keyboard).
+      Standard output (stdout) is where print() sends its output (usually the screen).
+  - term: Pyodide
+    definition: >
+      A port of CPython to WebAssembly, allowing Python to run in a web browser. Some
+      standard library features (like blocking input()) require workarounds in this context.
+  - term: Type Conversion of Input
+    definition: >
+      The necessary step of calling int(), float(), or another type constructor on the
+      string returned by input() before performing numeric operations.

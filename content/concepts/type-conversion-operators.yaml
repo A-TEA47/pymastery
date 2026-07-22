@@ -1,0 +1,166 @@
+id: type-conversion-operators
+level: beginner
+module: fundamentals
+title: "Type Conversion & Operators"
+prerequisites:
+  - variables-and-types
+estimated_minutes: 30
+
+plain_explanation: |
+  Imagine you have a number written on a sticky note, but you need to put it into a text
+  message. You'd convert that number into words first. Python works the same way — it lets
+  you convert values from one type to another using built-in functions like int(), float(),
+  str(), and bool(). This is called type conversion (or type casting).
+
+  Operators are the symbols Python uses to do math, compare values, and combine true/false
+  conditions. You already know +, -, *, and / from school. Python adds a few extras like //
+  for floor division (drops the decimal), % for the remainder, and ** for powers.
+
+  Comparison operators (==, !=, <, >, <=, >=) are like questions you ask Python: "Is this
+  greater than that?" The answer is always True or False. Think of them as yes/no quiz
+  questions.
+
+  Logical operators (and, or, not) let you combine those yes/no answers. "Is it raining AND
+  is it cold?" Both conditions must be true for you to wear a raincoat. "Is it raining OR
+  is it cold?" Just one needs to be true.
+
+technical_explanation: |
+  **Type Conversion**
+  Python provides built-in functions for explicit type casting:
+  - `int(x)` — converts x to an integer (truncates floats, parses numeric strings)
+  - `float(x)` — converts x to a floating-point number
+  - `str(x)` — converts x to its string representation
+  - `bool(x)` — converts x to True or False following Python's truthiness rules
+    (falsy: 0, 0.0, "", None, [], {}, set(); everything else is truthy)
+
+  **Arithmetic Operators**
+  | Operator | Name | Example | Result |
+  |---|---|---|---|
+  | + | Addition | 3 + 2 | 5 |
+  | - | Subtraction | 3 - 2 | 1 |
+  | * | Multiplication | 3 * 2 | 6 |
+  | / | True Division | 7 / 2 | 3.5 |
+  | // | Floor Division | 7 // 2 | 3 |
+  | % | Modulo | 7 % 2 | 1 |
+  | ** | Exponentiation | 2 ** 3 | 8 |
+
+  **Comparison Operators** always return bool:
+  `==`, `!=`, `<`, `>`, `<=`, `>=`
+
+  **Logical Operators:**
+  - `and` — True if BOTH operands are truthy
+  - `or` — True if AT LEAST ONE operand is truthy
+  - `not` — inverts the boolean value
+  - Short-circuit evaluation applies: `and` stops at the first falsy value, `or` stops at
+    the first truthy value.
+
+  Operator precedence (high to low): `**` > unary `-` > `*`, `/`, `//`, `%` > `+`, `-` >
+  comparisons > `not` > `and` > `or`.
+
+examples:
+  - title: "Type Conversion in Action"
+    code: |
+      # Converting between types
+      age_str = "25"
+      age_int = int(age_str)        # "25" -> 25
+      price = float("19.99")        # "19.99" -> 19.99
+      label = str(42)               # 42 -> "42"
+
+      # Truthiness
+      print(bool(0))       # False
+      print(bool("hello")) # True
+      print(bool([]))      # False
+      print(bool(42))      # True
+
+      # Combining: convert user input (always a string) to a number
+      raw = "100"
+      dollars = int(raw) * 1.08    # apply 8% tax
+      print(f"Total: ${dollars}")  # Total: $108.0
+    explanation: >
+      int() and float() parse numeric strings into numbers. bool() reveals Python's
+      truthiness rules — empty containers and zero are falsy, everything else is truthy.
+
+  - title: "Arithmetic & Floor Division"
+    code: |
+      # Standard arithmetic
+      print(10 + 3)   # 13
+      print(10 - 3)   # 7
+      print(10 * 3)   # 30
+      print(10 / 3)   # 3.3333...  (always a float)
+      print(10 // 3)  # 3          (drops remainder)
+      print(10 % 3)   # 1          (remainder only)
+      print(2 ** 8)   # 256
+
+      # Practical example: splitting items into boxes
+      items = 47
+      box_size = 5
+      full_boxes = items // box_size   # 9
+      leftover   = items % box_size    # 2
+      print(f"{full_boxes} full boxes with {leftover} left over")
+    explanation: >
+      // and % are a pair: together they let you split a quantity into whole groups and a
+      remainder — think of dividing 47 candies into bags of 5.
+
+  - title: "Comparison & Logical Operators"
+    code: |
+      temperature = 35
+      is_hot = temperature > 30          # True
+      is_freezing = temperature < 0      # False
+
+      # Logical operators
+      print(is_hot and is_freezing)      # False (both must be True)
+      print(is_hot or is_freezing)       # True  (at least one True)
+      print(not is_freezing)             # True  (flip False -> True)
+
+      # Chained comparisons (Pythonic!)
+      score = 78
+      passing = 50 <= score <= 100       # True
+      print(passing)
+
+      # Type-safe comparison
+      print(1 == 1.0)    # True  (value equality)
+      print(1 is 1.0)    # False (identity — different objects)
+    explanation: >
+      Python allows chained comparisons like 50 <= score <= 100, which reads naturally.
+      Use == for value equality; use 'is' only when checking identity (e.g., None checks).
+
+common_mistakes:
+  - "Using = instead of == in comparisons (= assigns, == compares)"
+  - "Expecting / to return an integer — it always returns float in Python 3"
+  - "Calling int() on a float string like '3.14' — use float() first, then int()"
+  - "Confusing 'and'/'or' return values — they return one of the operands, not just True/False"
+  - "Forgetting operator precedence: 2 + 3 * 4 is 14, not 20"
+  - "Assuming bool('False') is False — any non-empty string is truthy, including 'False'"
+
+related_concepts:
+  - variables-and-types
+  - conditionals
+  - strings
+
+problem_ids:
+  - celsius-to-fahrenheit
+  - odd-or-even
+  - grade-calculator
+
+glossary_terms:
+  - term: Type Conversion
+    definition: >
+      Explicitly changing a value from one data type to another using functions like
+      int(), float(), str(), or bool().
+  - term: Floor Division
+    definition: >
+      The // operator divides two numbers and rounds the result down to the nearest
+      integer, discarding the fractional part.
+  - term: Modulo
+    definition: >
+      The % operator returns the remainder after integer division. For example,
+      10 % 3 equals 1 because 10 = 3*3 + 1.
+  - term: Truthy / Falsy
+    definition: >
+      In Python, values that evaluate to True in a boolean context are "truthy";
+      those that evaluate to False are "falsy". Falsy values include 0, 0.0, "",
+      None, [], {}, and set().
+  - term: Short-Circuit Evaluation
+    definition: >
+      Python stops evaluating 'and'/'or' expressions as soon as the outcome is
+      determined. In 'A and B', if A is falsy, B is never evaluated.

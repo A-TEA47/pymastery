@@ -1,0 +1,196 @@
+id: dictionaries
+level: beginner
+module: data-structures
+title: "Dictionaries: Key-Value Storage"
+prerequisites:
+  - lists
+estimated_minutes: 35
+
+plain_explanation: |
+  A dictionary is like a real-world dictionary or a phone book: you look things up by a
+  name (the key), and you get back a piece of information (the value). Instead of
+  searching page by page, a dictionary takes you directly to the answer. In Python, keys
+  can be words, numbers, or anything else that doesn't change; values can be anything.
+
+  Unlike lists (where order is by position), dictionaries are ordered by insertion order
+  (since Python 3.7) and accessed by key. If you ask for a key that doesn't exist, Python
+  raises a KeyError — unless you use .get(), which returns None (or a default you provide)
+  instead of crashing.
+
+  Iterating over a dictionary gives you its keys by default, but you can also iterate
+  over its values with .values(), or over both key and value together with .items().
+  The .items() method is especially powerful when combined with loops.
+
+  Dictionaries are one of Python's most used data structures — they power things like
+  counting word frequencies, storing user profiles, building lookup tables, and grouping
+  data by category.
+
+technical_explanation: |
+  A Python dict is a **mutable, ordered (CPython 3.7+) hash map** that maps hashable
+  keys to arbitrary values. Average O(1) for insert, lookup, and delete.
+
+  **Creation:**
+  ```python
+  empty   = {}
+  ages    = {"Alice": 30, "Bob": 25}
+  from_kv = dict(name="Alice", age=30)
+  from_pairs = dict([("a", 1), ("b", 2)])
+  ```
+
+  **Access & Mutation:**
+  ```python
+  ages["Alice"]          # 30 — raises KeyError if absent
+  ages.get("Zara")       # None — safe, no exception
+  ages.get("Zara", 0)    # 0  — custom default
+  ages["Charlie"] = 28   # add or update
+  del ages["Bob"]        # remove key
+  popped = ages.pop("Alice")      # remove & return value
+  ages.pop("missing", None)       # safe pop with default
+  ```
+
+  **Key methods:**
+  | Method | Returns | Description |
+  |---|---|---|
+  | `.keys()` | dict_keys | All keys (view, not list) |
+  | `.values()` | dict_values | All values (view) |
+  | `.items()` | dict_items | (key, value) pairs (view) |
+  | `.get(k, default)` | value or default | Safe lookup |
+  | `.update(other)` | None | Merge another dict in place |
+  | `.pop(k, default)` | value | Remove & return |
+  | `.setdefault(k, default)` | value | Get key; set if missing |
+  | `.copy()` | dict | Shallow copy |
+  | `.clear()` | None | Remove all items |
+
+  **Membership:** `k in d` checks keys in O(1).
+
+  **Dict comprehension:** `{k: v for k, v in pairs}`.
+
+  **Merging (Python 3.9+):** `merged = d1 | d2`.
+
+examples:
+  - title: "Creating and Accessing a Dictionary"
+    code: |
+      # Create a dictionary
+      student = {
+          "name": "Alice",
+          "age": 20,
+          "grade": "A",
+          "scores": [88, 92, 95],
+      }
+
+      # Access values
+      print(student["name"])      # Alice
+      print(student["scores"])    # [88, 92, 95]
+
+      # Safe access with .get()
+      print(student.get("age"))         # 20
+      print(student.get("email"))       # None
+      print(student.get("email", "N/A"))# N/A
+
+      # Add and update
+      student["email"] = "alice@uni.edu"   # new key
+      student["age"] = 21                  # update existing key
+      print(student["age"])               # 21
+
+      # Delete
+      del student["grade"]
+      print("grade" in student)           # False
+    explanation: >
+      Use [] for access when you're sure the key exists; use .get() when uncertain to
+      avoid KeyError crashes. Adding a new key is identical to updating an existing one.
+
+  - title: "Iterating Over a Dictionary"
+    code: |
+      inventory = {"apple": 5, "banana": 12, "cherry": 3}
+
+      # Iterate over keys (default)
+      for fruit in inventory:
+          print(fruit)           # apple, banana, cherry
+
+      # Iterate over values
+      for count in inventory.values():
+          print(count)           # 5, 12, 3
+
+      # Iterate over key-value pairs (most useful)
+      for fruit, count in inventory.items():
+          print(f"{fruit}: {count}")
+
+      # Find total stock
+      total = sum(inventory.values())
+      print(f"Total items: {total}")   # Total items: 20
+
+      # Find items low on stock
+      low_stock = [f for f, c in inventory.items() if c < 5]
+      print(low_stock)                 # ['cherry']
+    explanation: >
+      .items() is the most versatile method — it unpacks each entry into key and value
+      directly in the for loop, avoiding repeated dict lookups.
+
+  - title: "Building a Frequency Counter"
+    code: |
+      words = ["cat", "dog", "cat", "bird", "dog", "cat"]
+
+      # Count word frequencies
+      freq = {}
+      for word in words:
+          freq[word] = freq.get(word, 0) + 1
+
+      print(freq)   # {'cat': 3, 'dog': 2, 'bird': 1}
+
+      # Find the most common word
+      most_common = max(freq, key=freq.get)
+      print(f"Most common: {most_common} ({freq[most_common]} times)")
+
+      # Merge two dictionaries
+      extra = {"fish": 2, "cat": 1}
+      freq.update(extra)   # adds fish, OVERWRITES cat
+      print(freq)          # cat is now 1 (overwritten)
+
+      # Safe merge without overwriting (Python 3.9+)
+      merged = freq | extra    # creates new dict
+      print(merged)
+    explanation: >
+      The pattern `d[key] = d.get(key, 0) + 1` is the classic way to build a counter.
+      Python's collections.Counter provides this out of the box, but building it manually
+      cements the understanding.
+
+common_mistakes:
+  - "Accessing a missing key with [] instead of .get() — raises KeyError"
+  - "Iterating over .items() and forgetting to unpack: 'for item in d.items()' gives tuples"
+  - "Modifying a dictionary while iterating over it — raises RuntimeError"
+  - "Assuming dict preserves insertion order in Python 2/3.5 — only guaranteed from 3.7+"
+  - "Using a mutable object (list) as a dictionary key — raises TypeError (not hashable)"
+  - "Confusing .update() with merging safely — .update() OVERWRITES existing keys"
+
+related_concepts:
+  - lists
+  - tuples
+  - sets
+  - loops
+
+problem_ids:
+  - word-frequency
+  - merge-dicts
+  - invert-dict
+
+glossary_terms:
+  - term: Dictionary
+    definition: >
+      A mutable, ordered collection of key-value pairs. Provides O(1) average lookup,
+      insertion, and deletion via hashing. Keys must be hashable.
+  - term: Key
+    definition: >
+      The identifier used to store and retrieve a value in a dictionary. Keys must be
+      immutable (hashable) objects, such as strings, numbers, or tuples.
+  - term: Value
+    definition: >
+      The data associated with a key in a dictionary. Values can be any Python object,
+      including lists, other dicts, or functions.
+  - term: Hash Map
+    definition: >
+      The underlying data structure of a Python dict. Keys are hashed to determine
+      storage location, enabling average O(1) access time.
+  - term: dict.get()
+    definition: >
+      A safe way to access a dictionary value that returns a default (None by default)
+      instead of raising KeyError when the key is absent.

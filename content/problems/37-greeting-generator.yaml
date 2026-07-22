@@ -1,0 +1,63 @@
+id: greeting-generator
+concept_ids:
+  - input-output
+level: beginner
+tier: warmup
+difficulty: 2
+title: Greeting Generator
+prompt: |
+  Write a function format_greeting(name, time_of_day) that returns a greeting
+  string based on the time of day.
+
+  Rules:
+    - If time_of_day is 'morning'   -> return 'Good morning, {name}!'
+    - If time_of_day is 'afternoon' -> return 'Good afternoon, {name}!'
+    - If time_of_day is 'evening'   -> return 'Good evening, {name}!'
+    - For any other value           -> return 'Hello, {name}!'
+
+  Examples:
+    format_greeting('Alice', 'morning')    -> 'Good morning, Alice!'
+    format_greeting('Bob', 'afternoon')    -> 'Good afternoon, Bob!'
+    format_greeting('Carol', 'evening')    -> 'Good evening, Carol!'
+    format_greeting('Dave', 'night')       -> 'Hello, Dave!'
+
+  Function signature:
+    def format_greeting(name, time_of_day):
+starter_code: |
+  def format_greeting(name, time_of_day):
+      # your code here
+      pass
+solution_code: |
+  def format_greeting(name, time_of_day):
+      if time_of_day == 'morning':
+          return f'Good morning, {name}!'
+      elif time_of_day == 'afternoon':
+          return f'Good afternoon, {name}!'
+      elif time_of_day == 'evening':
+          return f'Good evening, {name}!'
+      else:
+          return f'Hello, {name}!'
+function_name: format_greeting
+test_cases:
+  - input: ["Alice", "morning"]
+    expected: "Good morning, Alice!"
+  - input: ["Bob", "afternoon"]
+    expected: "Good afternoon, Bob!"
+  - input: ["Carol", "evening"]
+    expected: "Good evening, Carol!"
+  - input: ["Dave", "night"]
+    expected: "Hello, Dave!"
+hidden_test_cases:
+  - input: ["Eve", "midnight"]
+    expected: "Hello, Eve!"
+  - input: ["Frank", "morning"]
+    expected: "Good morning, Frank!"
+hints:
+  - "Use if/elif/else to handle the four cases."
+  - "Use an f-string to insert the name into the greeting string."
+tags:
+  - input-output
+  - strings
+  - conditionals
+  - f-strings
+  - beginner

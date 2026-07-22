@@ -1,0 +1,57 @@
+id: find-max
+concept_ids:
+  - lists
+level: beginner
+tier: applied
+difficulty: 3
+title: Find the Maximum Value
+prompt: |
+  Write a function find_max(nums) that returns the largest number
+  in the list nums.
+
+  You may NOT use Python's built-in max() function.
+
+  If the list is empty, return None.
+
+  Example:
+    find_max([3, 1, 4, 1, 5, 9])  => 9
+    find_max([-3, -1, -4])         => -1
+    find_max([42])                 => 42
+    find_max([])                   => None
+starter_code: |
+  def find_max(nums):
+      # your code here — do NOT use max()
+      pass
+solution_code: |
+  def find_max(nums):
+      if not nums:
+          return None
+      largest = nums[0]
+      for n in nums[1:]:
+          if n > largest:
+              largest = n
+      return largest
+function_name: find_max
+test_cases:
+  - input: [[3, 1, 4, 1, 5, 9]]
+    expected: 9
+  - input: [[-3, -1, -4]]
+    expected: -1
+  - input: [[42]]
+    expected: 42
+  - input: [[]]
+    expected: null
+hidden_test_cases:
+  - input: [[0, 0, 0]]
+    expected: 0
+  - input: [[100, 99, 98, 101]]
+    expected: 101
+hints:
+  - "Handle the empty list case first — return None immediately if nums has no elements."
+  - "Start by assuming the first element is the largest. Then loop through the rest and update if you find something bigger."
+  - "For all-negative lists, the same logic works — just make sure you initialize 'largest' with nums[0], not 0."
+tags:
+  - lists
+  - loops
+  - searching
+  - beginner

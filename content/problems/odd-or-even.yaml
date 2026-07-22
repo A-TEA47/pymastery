@@ -1,0 +1,58 @@
+id: odd-or-even
+concept_ids:
+  - type-conversion-operators
+level: beginner
+tier: applied
+difficulty: 4
+title: Odd-Even Split
+prompt: |
+  Write a function odd_even_split(numbers) that takes a list of integers
+  and returns a tuple (evens, odds) where:
+    - evens is a list of all even numbers from numbers, in their original order
+    - odds  is a list of all odd numbers from numbers, in their original order
+
+  Example:
+    odd_even_split([1, 2, 3, 4, 5]) => ([2, 4], [1, 3, 5])
+    odd_even_split([10, 7, 8, 3])   => ([10, 8], [7, 3])
+    odd_even_split([])              => ([], [])
+
+  Note: Negative numbers follow the same even/odd rules (e.g., -2 is even, -3 is odd).
+starter_code: |
+  def odd_even_split(numbers):
+      # your code here
+      pass
+solution_code: |
+  def odd_even_split(numbers):
+      evens = []
+      odds = []
+      for n in numbers:
+          if n % 2 == 0:
+              evens.append(n)
+          else:
+              odds.append(n)
+      return (evens, odds)
+function_name: odd_even_split
+test_cases:
+  - input: [[1, 2, 3, 4, 5]]
+    expected: [[2, 4], [1, 3, 5]]
+  - input: [[10, 7, 8, 3]]
+    expected: [[10, 8], [7, 3]]
+  - input: [[]]
+    expected: [[], []]
+  - input: [[2, 4, 6]]
+    expected: [[2, 4, 6], []]
+hidden_test_cases:
+  - input: [[-4, -3, -2, -1, 0]]
+    expected: [[-4, -2, 0], [-3, -1]]
+  - input: [[1, 3, 5, 7]]
+    expected: [[], [1, 3, 5, 7]]
+hints:
+  - "A number is even if n % 2 == 0, and odd otherwise."
+  - "Loop through the list and append each number to the appropriate list (evens or odds)."
+  - "Return the two lists as a tuple: return (evens, odds)."
+tags:
+  - lists
+  - loops
+  - modulo
+  - tuples
+  - beginner

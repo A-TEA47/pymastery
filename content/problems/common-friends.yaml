@@ -1,0 +1,58 @@
+id: common-friends
+concept_ids:
+  - sets
+level: beginner
+tier: applied
+difficulty: 4
+title: Mutual Friends
+prompt: |
+  Write a function mutual_friends(friends_a, friends_b) that takes two lists
+  of friend names (strings) and returns a sorted list of names that appear
+  in BOTH lists.
+
+  - The result must be sorted alphabetically.
+  - If there are no mutual friends, return an empty list.
+  - Duplicate names within a single list should be treated as one person.
+
+  Examples:
+    mutual_friends(["Alice", "Bob", "Carol"], ["Bob", "Carol", "Dave"])
+      -> ["Bob", "Carol"]
+
+    mutual_friends(["Alice", "Bob"], ["Carol", "Dave"])
+      -> []
+
+    mutual_friends(["Zara", "Mike", "Zara"], ["Mike", "Zara"])
+      -> ["Mike", "Zara"]
+starter_code: |
+  def mutual_friends(friends_a, friends_b):
+      # your code here
+      pass
+solution_code: |
+  def mutual_friends(friends_a, friends_b):
+      common = set(friends_a) & set(friends_b)
+      return sorted(common)
+function_name: mutual_friends
+test_cases:
+  - input: [["Alice", "Bob", "Carol"], ["Bob", "Carol", "Dave"]]
+    expected: ["Bob", "Carol"]
+  - input: [["Alice", "Bob"], ["Carol", "Dave"]]
+    expected: []
+  - input: [["Zara", "Mike", "Zara"], ["Mike", "Zara"]]
+    expected: ["Mike", "Zara"]
+  - input: [["Sam"], ["Sam"]]
+    expected: ["Sam"]
+  - input: [[], ["Alice"]]
+    expected: []
+hidden_test_cases:
+  - input: [["Anna", "Ben", "Cara", "Dan"], ["Ben", "Dan", "Eva"]]
+    expected: ["Ben", "Dan"]
+  - input: [["X", "Y", "Z"], ["Z", "Y", "X"]]
+    expected: ["X", "Y", "Z"]
+hints:
+  - "Convert both lists to sets, then use the & operator (set intersection) to find common elements."
+  - "sorted() on a set returns a sorted list — perfect for the final result."
+  - "set(friends_a) & set(friends_b) gives you a set of names in both."
+tags:
+  - sets
+  - intersection
+  - sorting

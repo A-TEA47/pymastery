@@ -1,0 +1,65 @@
+id: fizzbuzz
+concept_ids:
+  - conditionals
+level: beginner
+tier: warmup
+difficulty: 2
+title: FizzBuzz Single Value
+prompt: |
+  Write a function fizzbuzz(n) that takes a single integer n and returns a
+  string according to these rules:
+
+    - If n is divisible by both 3 and 5, return 'FizzBuzz'.
+    - If n is divisible by 3 only, return 'Fizz'.
+    - If n is divisible by 5 only, return 'Buzz'.
+    - Otherwise, return the string representation of n (e.g., '7').
+
+  Note: test the combined case FIRST in your logic, otherwise you may return
+  'Fizz' or 'Buzz' prematurely for multiples of 15.
+
+  Examples:
+    fizzbuzz(3)  -> 'Fizz'
+    fizzbuzz(5)  -> 'Buzz'
+    fizzbuzz(15) -> 'FizzBuzz'
+    fizzbuzz(7)  -> '7'
+starter_code: |
+  def fizzbuzz(n):
+      # your code here
+      pass
+solution_code: |
+  def fizzbuzz(n):
+      if n % 3 == 0 and n % 5 == 0:
+          return "FizzBuzz"
+      elif n % 3 == 0:
+          return "Fizz"
+      elif n % 5 == 0:
+          return "Buzz"
+      else:
+          return str(n)
+function_name: fizzbuzz
+test_cases:
+  - input: [3]
+    expected: "Fizz"
+  - input: [5]
+    expected: "Buzz"
+  - input: [15]
+    expected: "FizzBuzz"
+  - input: [7]
+    expected: "7"
+  - input: [30]
+    expected: "FizzBuzz"
+  - input: [1]
+    expected: "1"
+hidden_test_cases:
+  - input: [9]
+    expected: "Fizz"
+  - input: [25]
+    expected: "Buzz"
+hints:
+  - "Check the combined case (divisible by both 3 AND 5) before checking them individually."
+  - "Use the modulo operator %: n % 3 == 0 means n is divisible by 3."
+  - "To convert n to a string, use str(n)."
+tags:
+  - conditionals
+  - modulo
+  - classic

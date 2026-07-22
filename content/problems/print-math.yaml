@@ -1,0 +1,48 @@
+id: print-math
+concept_ids:
+  - setting-up-python
+level: beginner
+tier: applied
+difficulty: 3
+title: Sum and Product
+prompt: |
+  Write a function sum_and_product(a, b) that takes two numbers a and b,
+  and returns a tuple containing two values:
+    - The first element is the sum of a and b
+    - The second element is the product of a and b
+
+  Example:
+    sum_and_product(3, 4)  => (7, 12)
+    sum_and_product(5, 0)  => (5, 0)
+    sum_and_product(-2, 3) => (1, -6)
+starter_code: |
+  def sum_and_product(a, b):
+      # your code here
+      pass
+solution_code: |
+  def sum_and_product(a, b):
+      return (a + b, a * b)
+function_name: sum_and_product
+test_cases:
+  - input: [3, 4]
+    expected: [7, 12]
+  - input: [5, 0]
+    expected: [5, 0]
+  - input: [-2, 3]
+    expected: [1, -6]
+  - input: [10, 10]
+    expected: [20, 100]
+hidden_test_cases:
+  - input: [0, 0]
+    expected: [0, 0]
+  - input: [-5, -5]
+    expected: [-10, 25]
+hints:
+  - "A tuple is created by placing comma-separated values in parentheses: (val1, val2)."
+  - "The sum uses +, the product uses *. Return them both in one tuple."
+  - "Try returning (a + b, a * b) as a single expression."
+tags:
+  - arithmetic
+  - tuples
+  - functions
+  - beginner

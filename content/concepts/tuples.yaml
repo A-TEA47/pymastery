@@ -1,0 +1,184 @@
+id: tuples
+level: beginner
+module: data-structures
+title: "Tuples: Immutable Sequences"
+prerequisites:
+  - lists
+estimated_minutes: 20
+
+plain_explanation: |
+  A tuple is like a list's more disciplined sibling — it holds an ordered collection of
+  items, but once you create it, you cannot change it. Think of a tuple like the date
+  on a receipt: (year, month, day). Those three values belong together, and you wouldn't
+  want someone changing the year by accident.
+
+  Because tuples can't be modified, they are safer to pass around in a program — you
+  know nothing will accidentally alter them. They're also slightly faster than lists for
+  simple data storage. Python itself uses tuples everywhere behind the scenes.
+
+  Packing and unpacking is one of the coolest tuple tricks. You can pack multiple values
+  into a tuple in one line, and then unpack them into separate variables just as easily.
+  When a Python function needs to return multiple values, it returns them as a tuple.
+
+  Use a tuple when: the data won't change (coordinates, RGB colours, database records),
+  you want to use the collection as a dictionary key, or you're returning multiple values
+  from a function. Use a list when the data needs to grow or shrink.
+
+technical_explanation: |
+  A tuple is an **immutable, ordered sequence** in Python, defined with parentheses or
+  just commas. It supports all read-only sequence operations.
+
+  **Creation:**
+  ```python
+  empty   = ()
+  single  = (42,)          # comma required for single-element tuple!
+  point   = (3, 7)
+  mixed   = (1, "two", 3.0)
+  packed  = 10, 20, 30     # parentheses are optional
+  nested  = ((1,2), (3,4))
+  from_list = tuple([1,2,3])
+  ```
+
+  **Immutability:** `t[0] = 99` raises `TypeError`. However, mutable objects inside a
+  tuple (e.g., a list) can still be mutated.
+
+  **Indexing & Slicing:** identical to lists (`t[i]`, `t[start:stop:step]`).
+
+  **Packing & Unpacking:**
+  ```python
+  coords = (10, 20, 30)         # packing
+  x, y, z = coords              # unpacking
+  first, *rest = coords         # starred unpacking: first=10, rest=[20,30]
+  a, b = b, a                   # swap without temp variable
+  ```
+
+  **Why tuples can be dict keys / set elements:** tuples are hashable (when all their
+  elements are hashable); lists are not.
+
+  **Named tuples:** `collections.namedtuple` gives tuple fields readable names.
+
+  **Common operations:** `len(t)`, `t.count(x)`, `t.index(x)`, `x in t`, `t1 + t2`,
+  `t * n`.
+
+  **Performance:** tuples use less memory than lists and are slightly faster for iteration
+  and creation because they skip the dynamic-resize overhead.
+
+examples:
+  - title: "Creating Tuples and Unpacking"
+    code: |
+      # Creating tuples
+      point = (3, 7)
+      rgb   = (255, 128, 0)
+      single_item = (42,)    # the comma makes it a tuple!
+      no_parens   = 1, 2, 3  # also a tuple
+
+      # Indexing (same as lists)
+      print(point[0])   # 3
+      print(rgb[-1])    # 0
+
+      # Unpacking — assign each element to a variable
+      x, y = point
+      print(f"x={x}, y={y}")   # x=3, y=7
+
+      r, g, b = rgb
+      print(f"Red={r}, Green={g}, Blue={b}")
+
+      # Starred unpacking
+      first, *rest = (10, 20, 30, 40)
+      print(first)   # 10
+      print(rest)    # [20, 30, 40]
+    explanation: >
+      Unpacking lets you pull tuple elements into named variables in one clean line.
+      The starred (*) form captures all remaining elements into a list.
+
+  - title: "Tuples as Return Values and Dict Keys"
+    code: |
+      # Functions naturally return multiple values as tuples
+      def min_max(numbers):
+          return min(numbers), max(numbers)   # returns a tuple
+
+      lo, hi = min_max([3, 1, 4, 1, 5, 9])
+      print(f"Min: {lo}, Max: {hi}")          # Min: 1, Max: 9
+
+      # Tuples as dictionary keys (lists cannot be keys)
+      grid = {}
+      grid[(0, 0)] = "origin"
+      grid[(1, 2)] = "point A"
+      print(grid[(0, 0)])   # origin
+
+      # Swap two variables elegantly
+      a, b = 10, 20
+      a, b = b, a           # no temp variable needed
+      print(a, b)           # 20 10
+    explanation: >
+      Returning multiple values as a tuple is idiomatic Python. Tuples are hashable
+      and can serve as dictionary keys or set elements — lists cannot.
+
+  - title: "Tuples vs Lists — When to Choose"
+    code: |
+      # Use a tuple for fixed, meaningful groups of data
+      person = ("Alice", 30, "Engineer")    # (name, age, role)
+      name, age, role = person
+
+      # Use a list when you need to modify content
+      shopping_cart = ["milk", "eggs"]
+      shopping_cart.append("bread")          # fine for lists
+
+      # Attempting to modify a tuple raises TypeError
+      try:
+          person[1] = 31
+      except TypeError as e:
+          print(f"Error: {e}")              # 'tuple' object does not support item assignment
+
+      # Tuple inside a dict (immutable key)
+      distances = {
+          ("New York", "London"): 5570,
+          ("Tokyo", "Sydney"):    7823,
+      }
+      print(distances[("Tokyo", "Sydney")])  # 7823
+
+      # Count and index
+      t = (1, 2, 2, 3, 2)
+      print(t.count(2))    # 3
+      print(t.index(3))    # 3
+    explanation: >
+      The key rule: if the data is a fixed record (coordinates, a row from a database,
+      RGB values), use a tuple. If the collection will grow or shrink, use a list.
+
+common_mistakes:
+  - "Forgetting the trailing comma for a single-element tuple: (42) is just int 42, not a tuple"
+  - "Trying to append or modify a tuple — raises TypeError because tuples are immutable"
+  - "Assuming 'immutable tuple' means its contents can never change — a list inside a tuple CAN be modified"
+  - "Unpacking with the wrong number of variables — causes ValueError: too many/few values to unpack"
+  - "Using a list as a dictionary key — raises TypeError; use a tuple instead"
+
+related_concepts:
+  - lists
+  - dictionaries
+  - functions
+
+problem_ids:
+  - tuple-swap
+  - min-max-tuple
+  - coordinate-distance
+
+glossary_terms:
+  - term: Tuple
+    definition: >
+      An immutable, ordered sequence of Python objects. Defined with parentheses or
+      commas, and accessed like a list via indexing and slicing.
+  - term: Packing
+    definition: >
+      Combining multiple values into a single tuple, e.g., coords = x, y, z.
+  - term: Unpacking
+    definition: >
+      Assigning each element of a tuple (or any iterable) to a separate variable in
+      one statement, e.g., x, y = point.
+  - term: Hashable
+    definition: >
+      An object is hashable if it has a stable hash value over its lifetime. Tuples of
+      hashable elements are hashable and can be used as dictionary keys or set members.
+  - term: Named Tuple
+    definition: >
+      A subclass of tuple created by collections.namedtuple that gives each field a
+      descriptive name, accessed via dot notation as well as indexing.

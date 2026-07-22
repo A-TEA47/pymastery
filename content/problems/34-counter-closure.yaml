@@ -1,0 +1,74 @@
+id: counter-closure
+concept_ids:
+  - scope
+level: beginner
+tier: warmup
+difficulty: 5
+title: Counter Closure
+prompt: |
+  Write a function make_counter() that returns a new function (a closure).
+  Each time the returned function is called with no arguments, it returns the
+  next integer, starting from 1 — so first call returns 1, second returns 2, etc.
+
+  Each call to make_counter() must create an independent counter that starts fresh.
+
+  Example:
+    counter = make_counter()
+    counter()  -> 1
+    counter()  -> 2
+    counter()  -> 3
+
+    other = make_counter()
+    other()    -> 1   # independent from `counter`
+
+  For testing purposes, also define:
+    def test_counter_calls(n):
+        counter = make_counter()
+        return [counter() for _ in range(n)]
+
+  Function signature:
+    def make_counter():
+    def test_counter_calls(n):
+starter_code: |
+  def make_counter():
+      # Return a function that increments and returns a count each time it's called
+      pass
+
+  def test_counter_calls(n):
+      counter = make_counter()
+      return [counter() for _ in range(n)]
+solution_code: |
+  def make_counter():
+      count = [0]  # mutable container so the inner function can modify it
+
+      def counter():
+          count[0] += 1
+          return count[0]
+
+      return counter
+
+  def test_counter_calls(n):
+      counter = make_counter()
+      return [counter() for _ in range(n)]
+function_name: test_counter_calls
+test_cases:
+  - input: [3]
+    expected: [1, 2, 3]
+  - input: [1]
+    expected: [1]
+  - input: [5]
+    expected: [1, 2, 3, 4, 5]
+hidden_test_cases:
+  - input: [0]
+    expected: []
+  - input: [6]
+    expected: [1, 2, 3, 4, 5, 6]
+hints:
+  - "The inner function must mutate state that lives in the outer scope — use a mutable object like a list."
+  - "count = [0] then count[0] += 1 inside the inner function avoids the 'nonlocal' keyword at beginner level."
+  - "Each call to make_counter() creates a brand-new list [0], so counters are independent."
+tags:
+  - scope
+  - closures
+  - functions
+  - beginner

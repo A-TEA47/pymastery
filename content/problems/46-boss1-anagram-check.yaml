@@ -1,0 +1,74 @@
+id: boss1-anagram-check
+concept_ids:
+  - strings
+  - dictionaries
+level: beginner
+tier: challenge
+difficulty: 6
+title: "Boss Challenge: Anagram Checker"
+prompt: |
+  Write a function are_anagrams(s1, s2) that returns True if s1 and s2 are
+  anagrams of each other — meaning they contain the exact same letters the same
+  number of times — and False otherwise.
+
+  Rules:
+    - Ignore spaces (remove all spaces before comparing).
+    - Ignore case (treat uppercase and lowercase as the same letter).
+    - Only letters count; but since we only ignore spaces, any other character
+      (digits, punctuation) is treated as a regular character.
+
+  Examples:
+    are_anagrams('listen', 'silent')            -> True
+    are_anagrams('Hello', 'world')              -> False
+    are_anagrams('Astronomer', 'Moon starer')   -> True
+    are_anagrams('abc', 'ab')                   -> False
+    are_anagrams('', '')                         -> True
+
+  Function signature:
+    def are_anagrams(s1, s2):
+starter_code: |
+  def are_anagrams(s1, s2):
+      # your code here
+      pass
+solution_code: |
+  def are_anagrams(s1, s2):
+      clean1 = s1.replace(' ', '').lower()
+      clean2 = s2.replace(' ', '').lower()
+
+      if len(clean1) != len(clean2):
+          return False
+
+      counts = {}
+      for ch in clean1:
+          counts[ch] = counts.get(ch, 0) + 1
+      for ch in clean2:
+          counts[ch] = counts.get(ch, 0) - 1
+
+      return all(v == 0 for v in counts.values())
+function_name: are_anagrams
+test_cases:
+  - input: ["listen", "silent"]
+    expected: true
+  - input: ["Hello", "world"]
+    expected: false
+  - input: ["Astronomer", "Moon starer"]
+    expected: true
+  - input: ["abc", "ab"]
+    expected: false
+  - input: ["", ""]
+    expected: true
+hidden_test_cases:
+  - input: ["Dormitory", "Dirty room"]
+    expected: true
+  - input: ["cat", "car"]
+    expected: false
+hints:
+  - "Remove spaces and convert to lowercase before comparing."
+  - "Use a frequency dictionary: count up chars in s1, then count down for s2."
+  - "At the end, all counts should be 0 for an anagram."
+  - "A shortcut: sorted(clean1) == sorted(clean2) also works, though O(n log n)."
+tags:
+  - strings
+  - dictionaries
+  - beginner
+  - boss-challenge

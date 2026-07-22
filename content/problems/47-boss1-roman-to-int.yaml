@@ -1,0 +1,89 @@
+id: boss1-roman-to-int
+concept_ids:
+  - dictionaries
+  - loops
+  - conditionals
+level: beginner
+tier: challenge
+difficulty: 9
+title: "Boss Challenge: Roman Numeral to Integer"
+prompt: |
+  Write a function roman_to_int(s) that converts a Roman numeral string to its
+  integer value.
+
+  Roman numeral values:
+    I = 1, V = 5, X = 10, L = 50, C = 100, D = 500, M = 1000
+
+  Subtraction rules (these six combinations represent a smaller value placed
+  before a larger one):
+    IV = 4,  IX = 9
+    XL = 40, XC = 90
+    CD = 400, CM = 900
+
+  The input is always a valid Roman numeral in the range 1–3999.
+
+  Examples:
+    roman_to_int('III')    -> 3
+    roman_to_int('IV')     -> 4
+    roman_to_int('IX')     -> 9
+    roman_to_int('LVIII')  -> 58   (L=50, V=5, III=3)
+    roman_to_int('MCMXCIV') -> 1994 (M=1000, CM=900, XC=90, IV=4)
+    roman_to_int('XLII')   -> 42
+
+  Function signature:
+    def roman_to_int(s):
+starter_code: |
+  def roman_to_int(s):
+      # your code here
+      pass
+solution_code: |
+  def roman_to_int(s):
+      values = {
+          'I': 1, 'V': 5, 'X': 10, 'L': 50,
+          'C': 100, 'D': 500, 'M': 1000
+      }
+      total = 0
+      prev = 0
+      for ch in reversed(s):
+          curr = values[ch]
+          if curr < prev:
+              total -= curr
+          else:
+              total += curr
+          prev = curr
+      return total
+function_name: roman_to_int
+test_cases:
+  - input: ["III"]
+    expected: 3
+  - input: ["IV"]
+    expected: 4
+  - input: ["IX"]
+    expected: 9
+  - input: ["LVIII"]
+    expected: 58
+  - input: ["MCMXCIV"]
+    expected: 1994
+hidden_test_cases:
+  - input: ["XLII"]
+    expected: 42
+  - input: ["MMXXVI"]
+    expected: 2026
+  - input: ["CD"]
+    expected: 400
+hints:
+  - "Build a dictionary mapping each Roman letter to its integer value."
+  - "Key insight: iterate the string right to left. If the current value is less than the previous (right) value, subtract it; otherwise add it."
+  - "This handles all subtraction cases (IV, IX, XL, etc.) automatically — no need to hard-code the pairs."
+  - "Use reversed(s) to loop right to left."
+external_reference:
+  source: leetcode
+  title: "Similar: Roman to Integer"
+  url: "https://leetcode.com/problems/roman-to-integer/"
+tags:
+  - dictionaries
+  - loops
+  - conditionals
+  - strings
+  - beginner
+  - boss-challenge

@@ -1,0 +1,46 @@
+id: reverse-string
+concept_ids:
+  - strings
+level: beginner
+tier: warmup
+difficulty: 2
+title: Reverse a String
+prompt: |
+  Write a function reverse_string(s) that takes a string s and returns
+  the string with all its characters in reversed order.
+
+  Example:
+    reverse_string("hello")   => "olleh"
+    reverse_string("Python")  => "nohtyP"
+    reverse_string("")        => ""
+    reverse_string("a")       => "a"
+starter_code: |
+  def reverse_string(s):
+      # your code here
+      pass
+solution_code: |
+  def reverse_string(s):
+      return s[::-1]
+function_name: reverse_string
+test_cases:
+  - input: ["hello"]
+    expected: "olleh"
+  - input: ["Python"]
+    expected: "nohtyP"
+  - input: [""]
+    expected: ""
+  - input: ["a"]
+    expected: "a"
+hidden_test_cases:
+  - input: ["racecar"]
+    expected: "racecar"
+  - input: ["12345"]
+    expected: "54321"
+hints:
+  - "Python slicing with a step of -1 reverses a sequence: s[::-1]."
+  - "You can also build the result manually with a loop: start with an empty string and prepend each character."
+  - "An empty string reversed is still an empty string — make sure your solution handles that edge case."
+tags:
+  - strings
+  - slicing
+  - beginner

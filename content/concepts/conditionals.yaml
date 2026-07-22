@@ -1,0 +1,194 @@
+id: conditionals
+level: beginner
+module: control-flow
+title: "Conditionals: if, elif, else"
+prerequisites:
+  - variables-and-types
+estimated_minutes: 30
+
+plain_explanation: |
+  Every decision you make in real life follows an if/else pattern: "If it's raining,
+  take an umbrella. Otherwise, wear sunglasses." Python uses exactly the same logic.
+  An `if` statement checks whether a condition is true, and runs a block of code only
+  when it is. The `else` block runs when the condition is false.
+
+  Sometimes you have more than two possibilities. `elif` (short for "else if") lets you
+  chain multiple conditions. Python checks them in order, runs the first block that is
+  true, and skips the rest — like a multi-choice question where you stop reading once
+  you find your answer.
+
+  Python also has a concept called "truthiness" — values that count as True or False
+  even when they're not literally the bool True or False. An empty list, 0, an empty
+  string, and None are all "falsy". Anything else is "truthy". This lets you write
+  clean conditions like `if username:` instead of `if username != ""`.
+
+  Finally, Python has a compact one-liner called a ternary expression (or conditional
+  expression): `value_if_true if condition else value_if_false`. It's great for short,
+  simple choices but should not replace full if/else blocks when logic is complex.
+
+technical_explanation: |
+  **Syntax:**
+  ```python
+  if condition:
+      # executed when condition is truthy
+  elif another_condition:
+      # executed when first is falsy, this is truthy
+  else:
+      # executed when all above are falsy
+  ```
+  Indentation (4 spaces by convention) defines blocks — Python has no braces.
+
+  **Truthiness (bool context):**
+  | Falsy | Truthy |
+  |---|---|
+  | `False`, `0`, `0.0`, `0j` | Any nonzero number |
+  | `""`, `b""`, `f""` | Non-empty string |
+  | `None` | Any object not listed |
+  | `[]`, `()`, `{}`, `set()` | Non-empty collection |
+
+  **Comparison operators:** `==`, `!=`, `<`, `>`, `<=`, `>=`
+  **Identity operators:** `is`, `is not` (use for None checks: `if x is None`)
+  **Membership:** `in`, `not in`
+
+  **Chained comparisons:** `0 < x < 10` — evaluated left to right.
+
+  **Logical operators and truthiness:**
+  - `and` returns first falsy value or last value if all truthy
+  - `or` returns first truthy value or last value if all falsy
+  - `not` always returns `True` or `False`
+
+  **Ternary / conditional expression:**
+  ```python
+  result = value_if_true if condition else value_if_false
+  ```
+  This is an **expression** (returns a value), not a statement.
+
+  **Match statement (Python 3.10+):** structural pattern matching —
+  an advanced alternative to long if/elif chains for complex conditions.
+
+examples:
+  - title: "Basic if / elif / else"
+    code: |
+      score = 74
+
+      if score >= 90:
+          grade = "A"
+      elif score >= 80:
+          grade = "B"
+      elif score >= 70:
+          grade = "C"
+      elif score >= 60:
+          grade = "D"
+      else:
+          grade = "F"
+
+      print(f"Score: {score} → Grade: {grade}")   # Score: 74 → Grade: C
+
+      # Chained comparison (Pythonic)
+      age = 25
+      if 18 <= age < 65:
+          print("Working age")
+
+      # None check (use 'is', not ==)
+      value = None
+      if value is None:
+          print("No value provided")
+    explanation: >
+      Python evaluates elif conditions top to bottom and stops at the first True one.
+      Always use 'is None' rather than '== None' for None comparisons.
+
+  - title: "Truthiness and Boolean Logic"
+    code: |
+      # Truthiness — no need to compare to empty/zero explicitly
+      username = ""
+      if not username:
+          print("Username cannot be blank")   # prints this
+
+      items = [1, 2, 3]
+      if items:
+          print(f"Processing {len(items)} items")  # prints this
+
+      # Logical operators
+      temperature = 22
+      humidity = 85
+
+      if temperature > 30 and humidity > 80:
+          print("Dangerously hot and humid")
+      elif temperature > 30 or humidity > 80:
+          print("Uncomfortable conditions")
+      else:
+          print("Comfortable")                 # prints this
+
+      # Compound condition with parentheses for clarity
+      is_admin = True
+      is_active = False
+      if is_admin and (is_active or True):     # Always runs for admin
+          print("Admin access granted")
+    explanation: >
+      Python's truthiness rules let you write expressive conditions. 'if items:' is more
+      Pythonic than 'if len(items) > 0:' — they mean exactly the same thing.
+
+  - title: "Ternary Expressions"
+    code: |
+      # Ternary: value_if_true if condition else value_if_false
+      age = 20
+      status = "adult" if age >= 18 else "minor"
+      print(status)   # adult
+
+      # Useful in f-strings
+      score = 55
+      result = "passed" if score >= 60 else "failed"
+      print(f"Student {result} the exam.")
+
+      # Nested ternary (use sparingly — hard to read)
+      x = 0
+      label = "positive" if x > 0 else ("zero" if x == 0 else "negative")
+      print(label)    # zero
+
+      # Common pattern: default value
+      name = ""
+      display_name = name if name else "Anonymous"
+      print(display_name)   # Anonymous
+    explanation: >
+      The ternary expression is best for simple two-way choices. If you find yourself
+      nesting ternaries more than once, a full if/elif/else is cleaner.
+
+common_mistakes:
+  - "Using = instead of == for comparisons — assigns instead of tests"
+  - "Forgetting the colon (:) after if / elif / else — causes SyntaxError"
+  - "Writing 'if x == True:' or 'if x == False:' instead of 'if x:' or 'if not x:'"
+  - "Using '==' to check for None — use 'is None' / 'is not None'"
+  - "Incorrect indentation — Python uses indentation for block structure"
+  - "Forgetting elif and using multiple if statements — all conditions are checked independently instead of being mutually exclusive"
+
+related_concepts:
+  - type-conversion-operators
+  - loops
+  - functions
+
+problem_ids:
+  - fizzbuzz
+  - password-checker
+  - triangle-type
+
+glossary_terms:
+  - term: Conditional Statement
+    definition: >
+      A programming construct (if / elif / else) that executes different code blocks
+      based on whether a condition evaluates to True or False.
+  - term: Truthiness
+    definition: >
+      Python's rule for treating any object as True or False in a boolean context.
+      Falsy values include 0, 0.0, "", None, and empty containers.
+  - term: Ternary Expression
+    definition: >
+      A compact single-line conditional: `x if condition else y`. It is an expression
+      that evaluates to one of two values depending on the condition.
+  - term: elif
+    definition: >
+      Short for "else if". Allows chaining multiple conditions after an initial if.
+      Only the first truthy branch executes.
+  - term: Short-Circuit Evaluation
+    definition: >
+      With 'and', evaluation stops at the first falsy operand; with 'or', it stops at
+      the first truthy operand. The remaining operands are not evaluated.

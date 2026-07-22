@@ -1,0 +1,77 @@
+id: invert-dict
+concept_ids:
+  - dictionaries
+level: intermediate
+tier: challenge
+difficulty: 7
+title: Invert a Dictionary
+prompt: |
+  Write a function invert_dict(d) that inverts a dictionary so that values
+  become keys and keys become values.
+
+  Rules:
+    - If a value maps to exactly one original key, the result maps that value
+      to the single key (not a list).
+    - If a value maps to multiple original keys, the result maps that value to
+      a SORTED LIST of all original keys that shared that value.
+    - The input values will be strings or integers (all hashable).
+    - The input keys will be strings.
+
+  Examples:
+    invert_dict({"a": 1, "b": 2, "c": 3})
+      -> {1: "a", 2: "b", 3: "c"}
+
+    invert_dict({"a": 1, "b": 1, "c": 2})
+      -> {1: ["a", "b"], 2: "c"}
+
+    invert_dict({"x": "foo", "y": "foo", "z": "foo"})
+      -> {"foo": ["x", "y", "z"]}
+starter_code: |
+  def invert_dict(d):
+      # your code here
+      pass
+solution_code: |
+  def invert_dict(d):
+      inverted = {}
+      for key, value in d.items():
+          if value not in inverted:
+              inverted[value] = key
+          else:
+              existing = inverted[value]
+              if isinstance(existing, list):
+                  existing.append(key)
+              else:
+                  inverted[value] = [existing, key]
+      # Sort any lists
+      for val in inverted:
+          if isinstance(inverted[val], list):
+              inverted[val] = sorted(inverted[val])
+      return inverted
+function_name: invert_dict
+test_cases:
+  - input: [{"a": 1, "b": 2, "c": 3}]
+    expected: {1: "a", 2: "b", 3: "c"}
+  - input: [{"a": 1, "b": 1, "c": 2}]
+    expected: {1: ["a", "b"], 2: "c"}
+  - input: [{"x": "foo", "y": "foo", "z": "foo"}]
+    expected: {"foo": ["x", "y", "z"]}
+  - input: [{"only": 99}]
+    expected: {99: "only"}
+  - input: [{"p": "v", "q": "v", "r": "w"}]
+    expected: {"v": ["p", "q"], "w": "r"}
+hidden_test_cases:
+  - input: [{"cat": "animal", "dog": "animal", "rose": "plant"}]
+    expected: {"animal": ["cat", "dog"], "plant": "rose"}
+  - input: [{"a": 1, "b": 2, "c": 1, "d": 2, "e": 3}]
+    expected: {1: ["a", "c"], 2: ["b", "d"], 3: "e"}
+hints:
+  - "Loop through d.items(). For each (key, value), add it to an inverted dictionary."
+  - "When you encounter a value already in the inverted dict, you need to handle collisions — convert the existing single key into a list, then append."
+  - "After building the inverted dict, make a second pass to sort any lists."
+  - "Use isinstance(x, list) to check whether the current mapping is already a list or a single value."
+time_limit_minutes: 25
+tags:
+  - dictionaries
+  - inversion
+  - grouping
+  - sorting

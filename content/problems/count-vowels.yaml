@@ -1,0 +1,58 @@
+id: count-vowels
+concept_ids:
+  - strings
+level: beginner
+tier: applied
+difficulty: 3
+title: Count the Vowels
+prompt: |
+  Write a function count_vowels(s) that counts and returns the number
+  of vowel characters in the string s.
+
+  Vowels are: a, e, i, o, u (both uppercase and lowercase count).
+
+  Example:
+    count_vowels("hello")       => 2
+    count_vowels("Python")      => 1
+    count_vowels("aeiouAEIOU")  => 10
+    count_vowels("rhythm")      => 0
+
+  Constraints:
+    - The function is case-insensitive (treat 'A' the same as 'a')
+    - Return an integer count (0 if no vowels)
+starter_code: |
+  def count_vowels(s):
+      # your code here
+      pass
+solution_code: |
+  def count_vowels(s):
+      count = 0
+      vowels = "aeiou"
+      for ch in s:
+          if ch.lower() in vowels:
+              count += 1
+      return count
+function_name: count_vowels
+test_cases:
+  - input: ["hello"]
+    expected: 2
+  - input: ["Python"]
+    expected: 1
+  - input: ["aeiouAEIOU"]
+    expected: 10
+  - input: ["rhythm"]
+    expected: 0
+hidden_test_cases:
+  - input: [""]
+    expected: 0
+  - input: ["UMBRELLA"]
+    expected: 3
+hints:
+  - "Define a string of vowels: vowels = 'aeiou'. Then check if each character is in that string."
+  - "Use ch.lower() so uppercase letters like 'A' and 'E' are treated as vowels too."
+  - "A counter variable starting at 0 and incremented in the loop is the clearest approach."
+tags:
+  - strings
+  - loops
+  - counting
+  - beginner

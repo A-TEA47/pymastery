@@ -1,0 +1,72 @@
+id: triangle-type
+concept_ids:
+  - conditionals
+level: beginner
+tier: challenge
+difficulty: 6
+title: Triangle Classifier
+prompt: |
+  Write a function triangle_type(a, b, c) that takes three numbers representing
+  the side lengths of a triangle and returns a string classifying the triangle.
+
+  Return one of these four strings:
+    - 'invalid'     — the sides cannot form a triangle. A valid triangle
+                      requires that the sum of any two sides is STRICTLY greater
+                      than the third side. Also, all sides must be positive.
+    - 'equilateral' — all three sides are equal.
+    - 'isosceles'   — exactly two sides are equal.
+    - 'scalene'     — all three sides are different.
+
+  Check validity FIRST. Among valid triangles, check equilateral before
+  isosceles, and isosceles before scalene.
+
+  Examples:
+    triangle_type(5, 5, 5)   -> 'equilateral'
+    triangle_type(5, 5, 3)   -> 'isosceles'
+    triangle_type(3, 4, 5)   -> 'scalene'
+    triangle_type(1, 2, 10)  -> 'invalid'
+    triangle_type(0, 5, 5)   -> 'invalid'
+starter_code: |
+  def triangle_type(a, b, c):
+      # your code here
+      pass
+solution_code: |
+  def triangle_type(a, b, c):
+      # All sides must be positive and satisfy the triangle inequality
+      if a <= 0 or b <= 0 or c <= 0:
+          return "invalid"
+      if a + b <= c or a + c <= b or b + c <= a:
+          return "invalid"
+      if a == b == c:
+          return "equilateral"
+      if a == b or b == c or a == c:
+          return "isosceles"
+      return "scalene"
+function_name: triangle_type
+test_cases:
+  - input: [5, 5, 5]
+    expected: "equilateral"
+  - input: [5, 5, 3]
+    expected: "isosceles"
+  - input: [3, 4, 5]
+    expected: "scalene"
+  - input: [1, 2, 10]
+    expected: "invalid"
+  - input: [0, 5, 5]
+    expected: "invalid"
+  - input: [7, 3, 5]
+    expected: "scalene"
+hidden_test_cases:
+  - input: [10, 10, 5]
+    expected: "isosceles"
+  - input: [5, 5, 10]
+    expected: "invalid"
+hints:
+  - "Check validity first: any side <= 0 is invalid, and any pair summing to <= the third is invalid."
+  - "For validity: check all three combinations — a+b>c, a+c>b, and b+c>a."
+  - "After ruling out invalid, check for equilateral (a==b==c), then isosceles (any two match), then scalene."
+time_limit_minutes: 20
+tags:
+  - conditionals
+  - geometry
+  - classification

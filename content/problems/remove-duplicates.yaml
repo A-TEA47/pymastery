@@ -1,0 +1,66 @@
+id: remove-duplicates
+concept_ids:
+  - lists
+level: beginner
+tier: challenge
+difficulty: 5
+title: Remove Duplicates, Preserve Order
+prompt: |
+  Write a function remove_duplicates(nums) that takes a list of integers
+  and returns a new list with all duplicate values removed, keeping only
+  the FIRST occurrence of each number. The relative order of the remaining
+  elements must be preserved.
+
+  Example:
+    remove_duplicates([1, 2, 3, 2, 1])      => [1, 2, 3]
+    remove_duplicates([4, 4, 4, 4])          => [4]
+    remove_duplicates([1, 2, 3])             => [1, 2, 3]
+    remove_duplicates([])                    => []
+    remove_duplicates([5, 3, 5, 1, 3, 2])   => [5, 3, 1, 2]
+
+  Do NOT simply convert to a set — sets do not preserve order reliably.
+time_limit_minutes: 15
+starter_code: |
+  def remove_duplicates(nums):
+      # your code here
+      pass
+solution_code: |
+  def remove_duplicates(nums):
+      seen = set()
+      result = []
+      for n in nums:
+          if n not in seen:
+              seen.add(n)
+              result.append(n)
+      return result
+function_name: remove_duplicates
+test_cases:
+  - input: [[1, 2, 3, 2, 1]]
+    expected: [1, 2, 3]
+  - input: [[4, 4, 4, 4]]
+    expected: [4]
+  - input: [[1, 2, 3]]
+    expected: [1, 2, 3]
+  - input: [[]]
+    expected: []
+  - input: [[5, 3, 5, 1, 3, 2]]
+    expected: [5, 3, 1, 2]
+hidden_test_cases:
+  - input: [[10, 20, 10, 30, 20, 40]]
+    expected: [10, 20, 30, 40]
+  - input: [[-1, -2, -1, 0, -2]]
+    expected: [-1, -2, 0]
+hints:
+  - "Use a set to track which numbers you have already added. Sets have O(1) membership checks."
+  - "Loop through nums. For each number, only add it to the result list if it's NOT already in the seen set."
+  - "Make sure to add the number to the 'seen' set at the same time you add it to the result list."
+external_reference:
+  source: leetcode
+  title: "Similar: Remove Duplicates from Sorted Array"
+  url: "https://leetcode.com/problems/remove-duplicates-from-sorted-array/"
+tags:
+  - lists
+  - sets
+  - deduplication
+  - order-preservation
+  - beginner

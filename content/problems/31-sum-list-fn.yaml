@@ -1,0 +1,46 @@
+id: sum-list-fn
+concept_ids:
+  - functions
+level: beginner
+tier: warmup
+difficulty: 3
+title: Apply a Function Twice
+prompt: |
+  Write a function apply_twice(f, x) that takes a function f and a value x,
+  and returns the result of applying f to x twice — i.e., f(f(x)).
+
+  For example:
+    apply_twice(lambda n: n + 3, 7)  -> 13   (7+3=10, 10+3=13)
+    apply_twice(lambda s: s + '!', 'hi')  -> 'hi!!'
+
+  Function signature:
+    def apply_twice(f, x):
+starter_code: |
+  def apply_twice(f, x):
+      # your code here
+      pass
+solution_code: |
+  def apply_twice(f, x):
+      return f(f(x))
+function_name: apply_twice
+test_cases:
+  - input: ["lambda n: n + 3", 7]
+    expected: 13
+  - input: ["lambda n: n * 2", 5]
+    expected: 20
+  - input: ["lambda s: s + '!'", "hi"]
+    expected: "hi!!"
+  - input: ["lambda n: n - 1", 10]
+    expected: 8
+hidden_test_cases:
+  - input: ["lambda n: n ** 2", 2]
+    expected: 16
+  - input: ["lambda s: s.upper()", "hello"]
+    expected: "HELLO"
+hints:
+  - "Call f once to get an intermediate result, then call f on that result."
+  - "One line: return f(f(x))"
+tags:
+  - functions
+  - higher-order-functions
+  - beginner
