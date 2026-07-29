@@ -21,11 +21,15 @@ export default function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const { user, loading } = useAuth();
 
+  const [authError, setAuthError] = useState<string | null>(null);
+
   const handleSignIn = async () => {
     try {
+      setAuthError(null);
       await signInWithPopup(auth, googleProvider);
-    } catch (error) {
+    } catch (error: any) {
       console.error("Error signing in", error);
+      setAuthError(error.message || "Failed to sign in. Please try again.");
     }
   };
 
@@ -145,13 +149,20 @@ export default function Navbar() {
                 </button>
               </div>
             ) : (
-              <button
-                onClick={handleSignIn}
-                className="btn-primary"
-                style={{ padding: "8px 16px", fontSize: "0.9rem" }}
-              >
-                Sign in with Google
-              </button>
+              <div style={{ display: "flex", flexDirection: "column", alignItems: "flex-end", gap: "4px" }}>
+                <button
+                  onClick={handleSignIn}
+                  className="btn-primary"
+                  style={{ padding: "8px 16px", fontSize: "0.9rem" }}
+                >
+                  Sign in with Google
+                </button>
+                {authError && (
+                  <span style={{ color: "var(--accent-red)", fontSize: "0.75rem", maxWidth: "200px", textAlign: "right" }}>
+                    {authError}
+                  </span>
+                )}
+              </div>
             )
           )}
         </div>
